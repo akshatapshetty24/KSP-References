@@ -27,10 +27,21 @@ sudo chown -R prometheus:prometheus /etc/prometheus /var/lib/prometheus
 cat <<EOF | sudo tee /etc/prometheus/prometheus.yml
 global:
   scrape_interval: 15s
+
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - localhost:9093
+
 scrape_configs:
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']
+
+  - job_name: 'node_exporter'
+    static_configs:
+      - targets: ['localhost:9100']
 EOF
 
 # Prometheus systemd service
