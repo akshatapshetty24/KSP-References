@@ -97,7 +97,7 @@ sudo useradd --no-create-home --shell /bin/false alertmanager || true
 sudo mkdir -p /etc/alertmanager /var/lib/alertmanager
 sudo cp /opt/alertmanager/alertmanager /opt/alertmanager/amtool /usr/local/bin/
 sudo chown alertmanager:alertmanager /usr/local/bin/alertmanager /usr/local/bin/amtool
-sudo cp -r /opt/alertmanager/templates /etc/alertmanager/
+#sudo cp -r /opt/alertmanager/templates /etc/alertmanager/
 sudo chown -R alertmanager:alertmanager /etc/alertmanager /var/lib/alertmanager
 
 # Sample alertmanager.yml config (update your Slack webhook accordingly)
