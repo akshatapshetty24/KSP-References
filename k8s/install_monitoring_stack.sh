@@ -28,6 +28,9 @@ cat <<EOF | sudo tee /etc/prometheus/prometheus.yml
 global:
   scrape_interval: 15s
 
+rule_files:
+  - "/etc/prometheus/test_alert.rules.yml"
+
 alerting:
   alertmanagers:
   - static_configs:
@@ -42,6 +45,21 @@ scrape_configs:
   - job_name: 'node_exporter'
     static_configs:
       - targets: ['localhost:9100']
+EOF
+
+# Sample test_alert.rules.yml config
+cat <<EOF | sudo tee /etc/prometheus/test_alert.rules.yml
+groups:
+- name: test_alert
+  rules:
+  - alert: TestAlert
+    expr: vector(1)
+    for: 10m
+    labels:
+      severity: warning
+    annotations:
+      summary: "This is a test alert"
+      description: "This alert is triggered for testing purposes."      
 EOF
 
 # Prometheus systemd service
