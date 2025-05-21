@@ -68,12 +68,22 @@ ExecStart=/usr/local/bin/node_exporter
 WantedBy=multi-user.target
 EOF
 
-# Install Grafana
+# Install Grafana (2025 update)
 echo "📥 Installing Grafana..."
-sudo apt-get install -y apt-transport-https software-properties-common
-sudo add-apt-repository "deb https://packages.grafana.com/oss/deb stable main"
-sudo wget -q -O /usr/share/keyrings/grafana.key https://packages.grafana.com/gpg.key
-echo "deb [signed-by=/usr/share/keyrings/grafana.key] https://packages.grafana.com/oss/deb stable main" | sudo tee /etc/apt/sources.list.d/grafana.list
+
+sudo apt-get install -y apt-transport-https software-properties-common curl gnupg
+
+# Clean any previous keys & repos
+sudo rm -f /etc/apt/sources.list.d/grafana.list
+sudo rm -f /etc/apt/keyrings/grafana.gpg
+
+# Add updated Grafana GPG key and repo
+sudo mkdir -p /etc/apt/keyrings
+sudo curl -fsSL https://packages.grafana.com/gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/grafana.gpg
+
+echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://packages.grafana.com/oss/deb stable main" | sudo tee /etc/apt/sources.list.d/grafana.list
+
+# Install Grafana
 sudo apt-get update -y
 sudo apt-get install -y grafana
 
