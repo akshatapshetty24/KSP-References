@@ -30,6 +30,7 @@ global:
 
 rule_files:
   - "/etc/prometheus/test_alert.rules.yml"
+  - "/etc/prometheus/cpu_alert.rules.yml"
 
 alerting:
   alertmanagers:
@@ -60,6 +61,21 @@ groups:
     annotations:
       summary: "This is a test alert"
       description: "This alert is triggered for testing purposes."      
+EOF
+
+# Sample cpu_alert.rules.yml config
+cat <<EOF | sudo tee /etc/prometheus/cpu_alert.rules.yml
+groups:
+- name: node_alerts
+  rules:
+  - alert: HighCPUUsage
+    expr: (100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[2m])) * 100)) > 80
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "High CPU usage detected on {{ $labels.instance }}"
+      description: "CPU usage is above 80% for more than 1 minute."  
 EOF
 
 # Prometheus systemd service
