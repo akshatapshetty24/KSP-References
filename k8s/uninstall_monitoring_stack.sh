@@ -23,6 +23,7 @@ sudo userdel -r node_exporter || true
 
 echo "🗑️  Removing configuration and data directories..."
 sudo rm -rf /etc/prometheus
+sudo rm -rf /opt/prometheus
 sudo rm -rf /var/lib/prometheus
 sudo rm -f /etc/systemd/system/prometheus.service
 sudo rm -f /etc/systemd/system/node_exporter.service
