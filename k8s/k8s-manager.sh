@@ -155,4 +155,8 @@ while true; do
 done
 
 #kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+#kubectl create deploy kspdeploy --image=nginx --replicas=3
+#kubectl expose deploy kspdeploy --port=80 --target-port=80 --type=ClusterIP
+#kubectl create deploy http-echo --image=hashicorp/http-echo --replicas=3
+#
 #kubectl run ksp2 --image=hashicorp/http-echo
