@@ -1,0 +1,85 @@
+name: Create EC2 Key Pair and Instance Automatically
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create-ec2:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Get latest Amazon Linux 2 AMI ID
+        id: get_ami
+        run: |
+          AMI_ID=$(aws ec2 describe-images \
+            --owners amazon \
+            --filters "Name=name,Values=amzn2-ami-hvm-*-x86_64-gp2" "Name=state,Values=available" \
+            --query 'Images | sort_by(@, &CreationDate)[-1].ImageId' \
+            --output text)
+          echo "Latest Amazon Linux 2 AMI ID: $AMI_ID"
+          echo "::set-output name=ami_id::$AMI_ID"
+
+      - name: Get default VPC ID
+        id: get_vpc
+        run: |
+          VPC_ID=$(aws ec2 describe-vpcs \
+            --filters Name=isDefault,Values=true \
+            --query 'Vpcs[0].VpcId' --output text)
+          echo "Default VPC ID: $VPC_ID"
+          echo "::set-output name=vpc_id::$VPC_ID"
+
+      - name: Get first security group ID in default VPC
+        id: get_sg
+        run: |
+          SG_ID=$(aws ec2 describe-security-groups \
+            --filters Name=vpc-id,Values=${{ steps.get_vpc.outputs.vpc_id }} \
+            --query 'SecurityGroups[0].GroupId' --output text)
+          echo "Security Group ID: $SG_ID"
+          echo "::set-output name=sg_id::$SG_ID"
+
+      - name: Get first subnet ID in default VPC
+        id: get_subnet
+        run: |
+          SUBNET_ID=$(aws ec2 describe-subnets \
+            --filters Name=vpc-id,Values=${{ steps.get_vpc.outputs.vpc_id }} \
+            --query 'Subnets[0].SubnetId' --output text)
+          echo "Subnet ID: $SUBNET_ID"
+          echo "::set-output name=subnet_id::$SUBNET_ID"
+
+      - name: Create EC2 Key Pair and save private key
+        id: create_keypair
+        run: |
+          KEY_NAME="github-actions-key-$(date +%s)"
+          echo "Creating key pair: $KEY_NAME"
+          aws ec2 create-key-pair --key-name "$KEY_NAME" --query 'KeyMaterial' --output text > private_key.pem
+          chmod 400 private_key.pem
+          echo "::set-output name=key_name::$KEY_NAME"
+
+      - name: Upload private key as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ec2-private-key
+          path: private_key.pem
+
+      - name: Launch EC2 Instance
+        id: launch_instance
+        run: |
+          INSTANCE_ID=$(aws ec2 run-instances \
+            --image-id ${{ steps.get_ami.outputs.ami_id }} \
+            --count 1 \
+            --instance-type t2.micro \
+            --key-name ${{ steps.create_keypair.outputs.key_name }} \
+            --security-group-ids ${{ steps.get_sg.outputs.sg_id }} \
+            --subnet-id ${{ steps.get_subnet.outputs.subnet_id }} \
+            --query 'Instances[0].InstanceId' \
+            --output text)
+
+          echo "EC2 instance created with Instance ID: $INSTANCE_ID"
+          echo "::set-output name=instance_id::$INSTANCE_ID"
