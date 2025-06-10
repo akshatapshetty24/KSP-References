@@ -1,10 +1,16 @@
 name: Terraform Apply EC2
 
+#on:
+ # workflow_dispatch:  # Trigger manually via Actions tab
+  #push:
+   # paths:
+    #  - 'tf/ec2/**'
+
 on:
-  workflow_dispatch:  # Trigger manually via Actions tab
-  push:
-    paths:
-      - 'tf/ec2/**'
+  workflow_run:
+    workflows: ["Terraform Deploy AWS VPC Setup"]
+    types:
+      - completed      
 
 jobs:
   terraform:
