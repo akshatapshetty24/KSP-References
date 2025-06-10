@@ -6,9 +6,14 @@ provider "aws" {
 data "aws_key_pair" "github_actions_key" {
   filter {
     name   = "key-name"
-    values = ["github-actions-key"]
+    values = ["github-actions-key-*"]
   }
 }
+
+output "selected_key_name" {
+  value = data.aws_key_pair.github_actions_key.key_name
+}
+
 
 # Filter VPC
 data "aws_vpc" "main_vpc" {
