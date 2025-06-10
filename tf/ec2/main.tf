@@ -47,6 +47,18 @@ data "aws_subnet" "private_subnet" {
   }
 }
 
+# Fetch Security Group
+data "aws_security_group" "example_sg" {
+  filter {
+    name   = "group-name"
+    values = ["example_sg"]
+  }
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.selected_vpc.id]
+  }
+}
+
 # Filter Amazon Linux 2023 AMI by Owner and Name
 data "aws_ami" "amazon_linux" {
   most_recent = true
@@ -64,6 +76,7 @@ resource "aws_instance" "public_ec2" {
   ami                         = data.aws_ami.amazon_linux.id
   instance_type               = "t2.micro"
   subnet_id                   = data.aws_subnet.public_subnet.id
+  vpc_security_group_ids      = [data.aws_security_group.example_sg.id]
   key_name                    = data.aws_key_pair.github_actions_key.key_name
   associate_public_ip_address = true
 
@@ -77,6 +90,7 @@ resource "aws_instance" "private_ec2" {
   ami                         = data.aws_ami.amazon_linux.id
   instance_type               = "t2.micro"
   subnet_id                   = data.aws_subnet.private_subnet.id
+  vpc_security_group_ids      = [data.aws_security_group.example_sg.id]
   key_name                    = data.aws_key_pair.github_actions_key.key_name
   associate_public_ip_address = false
 
