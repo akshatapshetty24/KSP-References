@@ -14,16 +14,15 @@ output "selected_key_name" {
   value = data.aws_key_pair.github_actions_key.key_name
 }
 
-
-# Filter VPC
-data "aws_vpc" "main_vpc" {
+# Fetch VPC
+data "aws_vpc" "selected_vpc" {
   filter {
     name   = "tag:Name"
     values = ["main-vpc"]
   }
 }
 
-# Filter Public Subnet
+# Fetch Public Subnet
 data "aws_subnet" "public_subnet" {
   filter {
     name   = "tag:Name"
@@ -31,11 +30,11 @@ data "aws_subnet" "public_subnet" {
   }
   filter {
     name   = "vpc-id"
-    values = [data.aws_vpc.main_vpc.id]
+    values = [data.aws_vpc.selected_vpc.id]
   }
 }
 
-# Filter Private Subnet
+# Fetch Private Subnet
 data "aws_subnet" "private_subnet" {
   filter {
     name   = "tag:Name"
@@ -43,7 +42,7 @@ data "aws_subnet" "private_subnet" {
   }
   filter {
     name   = "vpc-id"
-    values = [data.aws_vpc.main_vpc.id]
+    values = [data.aws_vpc.selected_vpc.id]
   }
 }
 
@@ -59,7 +58,7 @@ data "aws_security_group" "example_sg" {
   }
 }
 
-# Filter Amazon Linux 2023 AMI by Owner and Name
+# Fetch Latest Amazon Linux 2023 AMI
 data "aws_ami" "amazon_linux" {
   most_recent = true
 
@@ -68,16 +67,16 @@ data "aws_ami" "amazon_linux" {
     values = ["al2023-ami-*-x86_64"]
   }
 
-  owners = ["137112412989"] # Amazon's official account ID for Amazon Linux in ap-south-1
+  owners = ["137112412989"] # Amazon official
 }
 
-# Public EC2 Instance
+# Public EC2 instance
 resource "aws_instance" "public_ec2" {
   ami                         = data.aws_ami.amazon_linux.id
   instance_type               = "t2.micro"
   subnet_id                   = data.aws_subnet.public_subnet.id
   vpc_security_group_ids      = [data.aws_security_group.example_sg.id]
-  key_name                    = data.aws_key_pair.github_actions_key.key_name
+  key_name                    = data.aws_key_pair.selected_key.key_name
   associate_public_ip_address = true
 
   tags = {
@@ -85,13 +84,13 @@ resource "aws_instance" "public_ec2" {
   }
 }
 
-# Private EC2 Instance
+# Private EC2 instance
 resource "aws_instance" "private_ec2" {
   ami                         = data.aws_ami.amazon_linux.id
   instance_type               = "t2.micro"
   subnet_id                   = data.aws_subnet.private_subnet.id
   vpc_security_group_ids      = [data.aws_security_group.example_sg.id]
-  key_name                    = data.aws_key_pair.github_actions_key.key_name
+  key_name                    = data.aws_key_pair.selected_key.key_name
   associate_public_ip_address = false
 
   tags = {
