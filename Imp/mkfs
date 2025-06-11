@@ -1,3 +1,10 @@
+📖 What is an inode?
+An inode (index node) is a data structure on a filesystem that stores information about a file or directory except 
+its name and actual data.
+
+Every file and directory in a Linux filesystem has an inode associated with it. its contains  metadata about the file.
+
+
 📖 What is mkfs?
 mkfs (Make File System) is the command used to create a filesystem on a partition, Logical Volume (LV), or disk.
 mkfs.ext4 /dev/vg_data/lv_files
