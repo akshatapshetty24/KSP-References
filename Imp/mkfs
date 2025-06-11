@@ -4,6 +4,56 @@ its name and actual data.
 
 Every file and directory in a Linux filesystem has an inode associated with it. its contains  metadata about the file.
 
+📦 Text Diagram: Linux File and Inode Relationship
+
++----------------+       +------------+       +-------------------+
+| Directory File  |-----> | Inode Table |-----> | Data Blocks (file content) |
++----------------+       +------------+       +-------------------+
+
+Example:
+
+/myfile.txt
+
+Step 1: Directory Lookup
++----------------------+
+|  Name        | Inode# |
+|--------------|--------|
+| myfile.txt   |  32518 |
++----------------------+
+
+Step 2: Inode Table Lookup (inode 32518)
++-------------------------+
+| Inode Number: 32518      |
+| File Type: Regular File  |
+| File Size: 20KB          |
+| Owner: UID 1000          |
+| Permissions: rw-r--r--   |
+| Timestamps:              |
+|  - Created: ...          |
+|  - Modified: ...         |
+| Number of Links: 1       |
+| Pointers to Data Blocks: |
+|  - Block 1001            |
+|  - Block 1002            |
+|  - Block 1003            |
++-------------------------+
+
+Step 3: Data Block Lookup
++----------+
+| Block 1001| → [Actual File Data]
+| Block 1002| → [Actual File Data]
+| Block 1003| → [Actual File Data]
++----------+
+
+📌 Summary:
+Directory file maps filename → inode number.
+Inode table holds file metadata (not name or actual data).
+Data blocks contain the real file content.
+
+
+
+
+
 
 📖 What is mkfs?
 mkfs (Make File System) is the command used to create a filesystem on a partition, Logical Volume (LV), or disk.
