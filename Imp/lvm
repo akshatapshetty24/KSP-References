@@ -1,6 +1,7 @@
 📖 What is LVM?
 LVM (Logical Volume Manager) is a flexible, advanced disk management system for Linux.
-Instead of directly creating partitions on physical disks, LVM allows you to group disks together into a storage pool (Volume Group), and then carve out Logical Volumes (LVs) from that pool.
+Instead of directly creating partitions on physical disks, LVM allows you to group disks together into a storage pool 
+(Volume Group), and then carve out Logical Volumes (LVs) from that pool.
 
 📌 Why Do We Need LVM?
 ✅ Without LVM	                        ✅ With LVM
