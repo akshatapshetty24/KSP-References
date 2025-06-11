@@ -1,0 +1,50 @@
+📖 What is mkfs?
+mkfs (Make File System) is the command used to create a filesystem on a partition, Logical Volume (LV), or disk.
+mkfs.ext4 /dev/vg_data/lv_files
+
+✅ It formats the given device with a new filesystem — like ext4, xfs, etc.
+Note: This will erase any existing data on the device.
+
+📖 What is e2fsck?
+e2fsck (Ext2/3/4 Filesystem Consistency Check) is a tool to check and repair ext2, ext3, and ext4 filesystems.
+e2fsck -f /dev/vg_data/lv_files
+
+✅ It scans the filesystem for errors and attempts to fix them.
+Important:
+Always unmount the filesystem before running e2fsck.
+Run it before shrinking (reducing) an LV’s size.
+
+📖 What is resize2fs?
+resize2fs is a tool to resize ext2, ext3, or ext4 filesystems.
+Usage (increase size):
+resize2fs /dev/vg_data/lv_files
+
+✅ It can both expand and shrink filesystems, though shrinking requires extra care:
+Unmount filesystem.
+Run e2fsck.
+Resize filesystem.
+Resize logical volume.
+
+
+📦 Real-Life Example:
+
+Extend an LV and filesystem:
+
+lvextend -L +5G /dev/vg_data/lv_files
+resize2fs /dev/vg_data/lv_files
+
+Shrink an LV and filesystem:
+
+umount /dev/vg_data/lv_files
+e2fsck -f /dev/vg_data/lv_files
+resize2fs /dev/vg_data/lv_files 8G
+lvreduce -L 8G /dev/vg_data/lv_files
+mount /dev/vg_data/lv_files /mnt/files
+
+📊 Simple Comparison:
+
+Command	  Purpose	                    When to Use
+mkfs	    Create a new filesystem	    After creating a new partition or LV
+e2fsck	  Check and repair ext2/3/4   filesystems	Before shrinking, or if filesystem errors
+resize2fs	Expand or shrink ext2/3/4   filesystems	After extending/shrinking an LV
+
