@@ -1,0 +1,98 @@
+📖 LVM Commands: Create and Extend Logical Volumes
+
+📦 1️⃣ Create a Physical Volume (PV)
+pvcreate /dev/sdb
+👉 Check status:
+pvs
+
+📦 2️⃣ Create a Volume Group (VG)
+vgcreate vg_data /dev/sdb
+👉 Check status:
+vgs
+
+📦 3️⃣ Create a Logical Volume (LV)
+Example: 5G logical volume named lv_files inside vg_data
+lvcreate -L 5G -n lv_files vg_data
+👉 Verify:
+lvs
+
+📦 4️⃣ Format the Logical Volume
+Example: ext4 filesystem
+mkfs.ext4 /dev/vg_data/lv_files
+
+📦 5️⃣ Mount the Logical Volume
+Create a mount point and mount it:
+mkdir /mnt/files
+mount /dev/vg_data/lv_files /mnt/files
+👉 Check mount:
+Edit
+df -hT
+
+📦 6️⃣ Extend an Existing Logical Volume
+👉 Increase LV size by +6G:
+lvextend -L +6G /dev/vg_data/lv_files
+OR extend to total 20G:
+lvextend -L 20G /dev/vg_data/lv_files
+AND expand the filesystem:
+ext4/xfs (RHEL 7/8/9)
+
+👉 For ext4:
+resize2fs /dev/vg_data/lv_files
+
+👉 For xfs:
+xfs_growfs /mnt/files
+📖 Bonus: Resize with -r (Auto Filesystem Resize)
+👉 Single command (for ext4/xfs):
+lvextend -r -L +6G /dev/vg_data/lv_files
+
+📦 7️⃣ Check Final Size
+lvdisplay /dev/vg_data/lv_files
+df -hT
+
+🔥 Awesome — reducing a logical volume (LV) in LVM is a bit risky compared to extending, because you need to shrink the filesystem before reducing the LV size to avoid data loss.
+Let’s carefully list those steps clearly.
+
+📖 Full Steps to Decrease a Logical Volume (with care)
+⚠️ Important:
+Back up data before proceeding — shrink operations are destructive if mishandled.
+
+📦 1️⃣ Check Current LV and Filesystem Size
+lvdisplay /dev/vg_data/lv_files
+df -hT /mnt/files
+
+📦 2️⃣ Unmount the Logical Volume
+umount /mnt/files
+👉 Verify it’s unmounted:
+df -hT
+
+📦 3️⃣ Run Filesystem Check
+You must check and fix filesystem errors before resizing.
+👉 For ext4:
+e2fsck -f /dev/vg_data/lv_files
+👉 For xfs (cannot shrink directly — needs backup/restore method)
+
+📦 4️⃣ Resize Filesystem
+👉 For ext4:
+To shrink to 8G
+resize2fs /dev/vg_data/lv_files 8G
+
+📦 5️⃣ Reduce the Logical Volume
+Now reduce the LV to match the filesystem size you set above.
+👉 Example: reduce LV to 8G
+lvreduce -L 8G /dev/vg_data/lv_files
+👉 Confirm with:
+lvdisplay /dev/vg_data/lv_files
+
+📦 6️⃣ Remount the LV
+mount /dev/vg_data/lv_files /mnt/files
+👉 Verify:
+df -hT /mnt/files
+
+📦 Notes on XFS:
+XFS doesn’t support online or offline shrinking
+Only way is to:
+Backup data
+Unmount
+Remove and recreate LV with smaller size
+Format as XFS
+Restore data
