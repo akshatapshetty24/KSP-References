@@ -1,0 +1,123 @@
+✅ Complete Boot Sequence Flow:
+
+1️⃣ POST (Power-On Self Test)
+
+Performed by BIOS/UEFI — checks hardware (RAM, disks, CPU)
+
+2️⃣ MBR/Bootloader stage
+
+BIOS reads MBR (first 512 bytes on boot disk)
+
+Loads bootloader like GRUB
+
+3️⃣ GRUB Stage
+
+Displays boot menu
+
+Loads kernel and initrd/initramfs (temporary root FS image)
+
+4️⃣ Kernel Initialization
+
+Initializes hardware drivers
+
+Mounts root filesystem from disk
+
+Starts init system
+
+5️⃣ init/Systemd Process
+
+PID 1 — executes system initialization
+
+Reads /etc/inittab (SysV) or systemd unit files (RHEL7/8/9)
+
+6️⃣ Runlevel / Target Load
+
+Starts services, daemons, mounts file systems
+
+7️⃣ Login Prompt
+
+getty spawns TTY or graphical login manager appears
+
+✅ You can remember it like:
+POST → MBR → GRUB → Kernel → initramfs → init/systemd → Targets/Runlevels → Login
+
+
+
+📖 Linux Boot Sequence Flow
+1️⃣ POST (Power-On Self Test)
+BIOS/UEFI performs hardware checks:
+
+RAM
+
+Disk drives
+
+CPU
+
+Keyboard, etc.
+
+2️⃣ MBR / Bootloader Stage
+BIOS/UEFI reads MBR (first 512 bytes of boot disk)
+
+MBR contains the bootloader (like GRUB)
+
+3️⃣ GRUB Stage
+Displays boot menu
+
+Loads Kernel and initramfs (Initial RAM Filesystem)
+
+Passes control to the kernel
+
+4️⃣ Kernel Initialization
+Kernel initializes:
+
+CPU
+
+Memory management
+
+Device drivers
+
+Mounts initramfs as a temporary root filesystem
+
+Prepares the environment for init or systemd
+
+5️⃣ Initramfs / Init System Startup
+initramfs runs initial scripts for:
+
+Loading essential drivers
+
+Setting up the real root filesystem
+
+Executes init (SysV) or systemd (PID 1) as the first user-space process
+
+6️⃣ System Initialization (Systemd)
+Initializes system targets:
+
+Mounts file systems
+
+Starts essential services and daemons
+
+Configures networking
+
+Targets replace traditional runlevels
+
+7️⃣ Runlevel / Target Load
+Systemd Targets (like multi-user.target, graphical.target) define what services to start
+
+Brings system to desired operational state
+
+8️⃣ User Login
+Launches getty on TTYs
+
+Displays login prompt (or GUI via display manager)
+
+User logs in and gains shell or desktop environment access
+
+📌 Summary Flow:
+swift
+Copy
+Edit
+POST → MBR → GRUB → Kernel → Initramfs → Init/Systemd → Targets/Runlevels → Login
+
+
+
+
