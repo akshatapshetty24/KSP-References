@@ -1,0 +1,26 @@
+
+📖 What is Load Average?
+The load average is a measure of system activity, 
+showing the average number of processes that are either running or waiting for CPU or I/O over a period of time.
+
+load average: 1.23, 0.85, 0.65
+These correspond to:
+1.23 → average over the last 1 minute
+0.85 → average over the last 5 minutes
+0.65 → average over the last 15 minutes
+
+📖 How to Check Load Average:
+uptime
+top
+cat /proc/loadavg
+
+📌 Load Average Includes:
+✅ Processes running on CPU
+✅ Processes waiting for CPU
+✅ Processes in uninterruptible sleep (like waiting for disk I/O)
+It does not count sleeping or idle processes.
+
+📌 Rule of Thumb:
+Load Average vs CPU Cores	System Health
+Load <= Number of CPU Cores	Healthy
+Load > Number of CPU Cores	Overloaded
