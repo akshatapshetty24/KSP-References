@@ -2,7 +2,7 @@ provider "aws" {
   region = "us-east-1"
 }
 
-# Filter Key Pair
+# Fetch Key Pair
 data "aws_key_pair" "github_actions_key" {
   filter {
     name   = "key-name"
@@ -76,7 +76,7 @@ resource "aws_instance" "public_ec2" {
   instance_type               = "t2.micro"
   subnet_id                   = data.aws_subnet.public_subnet.id
   vpc_security_group_ids      = [data.aws_security_group.example_sg.id]
-  key_name                    = data.aws_key_pair.selected_key.key_name
+  key_name                    = data.aws_key_pair.github_actions_key.key_name
   associate_public_ip_address = true
 
   tags = {
@@ -90,7 +90,7 @@ resource "aws_instance" "private_ec2" {
   instance_type               = "t2.micro"
   subnet_id                   = data.aws_subnet.private_subnet.id
   vpc_security_group_ids      = [data.aws_security_group.example_sg.id]
-  key_name                    = data.aws_key_pair.selected_key.key_name
+  key_name                    = data.aws_key_pair.github_actions_key.key_name
   associate_public_ip_address = false
 
   tags = {
