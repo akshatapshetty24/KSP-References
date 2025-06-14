@@ -51,7 +51,7 @@ data "aws_subnet" "private_subnet" {
 data "aws_security_group" "example_sg" {
   filter {
     name   = "group-name"
-    values = ["example_sg"]
+    values = ["example-sg"]
   }
   filter {
     name   = "vpc-id"
