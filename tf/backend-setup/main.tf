@@ -3,7 +3,8 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "tf_state" {
-  bucket = "terraform-state-${random_id.suffix.hex}"
+  #bucket = "terraform-state-${random_id.suffix.hex}"
+  bucket = "terraform-state-c1391770"
   acl    = "private"
 
   versioning {
