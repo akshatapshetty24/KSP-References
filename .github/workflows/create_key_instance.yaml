@@ -1,4 +1,4 @@
-name: Create EC2 Key Pair and Instance Automatically
+name: Create EC2 Key Pair, PPK, and Instance Automatically
 
 on:
   workflow_dispatch:
@@ -23,16 +23,14 @@ jobs:
             --filters "Name=name,Values=amzn2-ami-hvm-*-x86_64-gp2" "Name=state,Values=available" \
             --query 'Images | sort_by(@, &CreationDate)[-1].ImageId' \
             --output text)
-          echo "Latest Amazon Linux 2 AMI ID: $AMI_ID"
+          echo "Latest AMI ID: $AMI_ID"
           echo "::set-output name=ami_id::$AMI_ID"
 
       - name: Get default VPC ID
         id: get_vpc
         run: |
-          VPC_ID=$(aws ec2 describe-vpcs \
-            --filters Name=isDefault,Values=true \
+          VPC_ID=$(aws ec2 describe-vpcs --filters Name=isDefault,Values=true \
             --query 'Vpcs[0].VpcId' --output text)
-          echo "Default VPC ID: $VPC_ID"
           echo "::set-output name=vpc_id::$VPC_ID"
 
       - name: Get first security group ID in default VPC
@@ -41,7 +39,6 @@ jobs:
           SG_ID=$(aws ec2 describe-security-groups \
             --filters Name=vpc-id,Values=${{ steps.get_vpc.outputs.vpc_id }} \
             --query 'SecurityGroups[0].GroupId' --output text)
-          echo "Security Group ID: $SG_ID"
           echo "::set-output name=sg_id::$SG_ID"
 
       - name: Get first subnet ID in default VPC
@@ -50,7 +47,6 @@ jobs:
           SUBNET_ID=$(aws ec2 describe-subnets \
             --filters Name=vpc-id,Values=${{ steps.get_vpc.outputs.vpc_id }} \
             --query 'Subnets[0].SubnetId' --output text)
-          echo "Subnet ID: $SUBNET_ID"
           echo "::set-output name=subnet_id::$SUBNET_ID"
 
       - name: Create EC2 Key Pair and save private key
@@ -62,11 +58,25 @@ jobs:
           chmod 400 private_key.pem
           echo "::set-output name=key_name::$KEY_NAME"
 
-      - name: Upload private key as artifact
+      - name: Install putty-tools (for PEM to PPK conversion)
+        run: sudo apt-get update && sudo apt-get install -y putty-tools
+
+      - name: Convert PEM to PPK
+        run: |
+          puttygen private_key.pem -O private -o private_key.ppk
+          echo "Converted PEM to PPK"
+
+      - name: Upload PEM as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ec2-private-key
+          name: ec2-private-key-pem
           path: private_key.pem
+
+      - name: Upload PPK as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ec2-private-key-ppk
+          path: private_key.ppk
 
       - name: Launch EC2 Instance
         id: launch_instance
@@ -80,6 +90,5 @@ jobs:
             --subnet-id ${{ steps.get_subnet.outputs.subnet_id }} \
             --query 'Instances[0].InstanceId' \
             --output text)
-
-          echo "EC2 instance created with Instance ID: $INSTANCE_ID"
+          echo "EC2 instance created with ID: $INSTANCE_ID"
           echo "::set-output name=instance_id::$INSTANCE_ID"
