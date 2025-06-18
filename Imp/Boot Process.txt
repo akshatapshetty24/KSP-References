@@ -118,6 +118,80 @@ Copy
 Edit
 POST → MBR → GRUB → Kernel → Initramfs → Init/Systemd → Targets/Runlevels → Login
 
+Jun 18, 2025
+
+📌 1️⃣ POST (Power-On Self Test)
+When the system powers on, BIOS/UEFI runs POST to check hardware health (RAM, CPU, disk, keyboard).
+
+If POST passes, it looks for a bootable disk.
+
+📌 2️⃣ MBR (Master Boot Record)
+The BIOS reads the first 512 bytes of the bootable disk (MBR).
+
+MBR contains:
+
+Boot loader information (like GRUB Stage 1)
+
+Partition table
+
+It transfers control to the boot loader.
+
+📌 3️⃣ GRUB (GRand Unified Bootloader)
+GRUB is the boot loader which loads the kernel into memory.
+
+Shows a boot menu (if configured).
+
+Loads kernel and initramfs (Initial RAM filesystem) into memory.
+
+Passes boot parameters to the kernel.
+
+📌 4️⃣ Kernel
+The kernel is the core of the OS.
+
+Initializes hardware drivers, memory management, CPU scheduling.
+
+Mounts initramfs as temporary root filesystem.
+
+Executes the first process (PID 1) — either init (SysVinit) or systemd on modern systems.
+
+📌 5️⃣ Initramfs
+Temporary root filesystem loaded into memory by GRUB.
+
+Contains essential drivers (disk, filesystem, etc.).
+
+Helps the kernel mount the actual root filesystem (/).
+
+Once actual root is mounted, initramfs is unmounted.
+
+📌 6️⃣ Init/Systemd
+PID 1 process.
+
+Initializes system services.
+
+In older systems: /etc/inittab defines the default runlevel.
+
+In modern systems: systemd uses targets like multi-user.target, graphical.target.
+
+📌 7️⃣ Targets/Runlevels
+A target/runlevel defines what services and environment get loaded.
+
+Examples:
+
+multi-user.target (like Runlevel 3 — CLI)
+
+graphical.target (like Runlevel 5 — GUI)
+
+systemd uses .target files under /etc/systemd/system/
+
+📌 8️⃣ Login
+Once all services are up, login prompts appear.
+
+Can be TTY for CLI or Display Manager for GUI.
+
+User logs in, and a shell session or GUI session begins.
+
+
+
 
 
 
