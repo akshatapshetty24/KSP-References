@@ -1,4 +1,10 @@
 
+       System  load averages is the average number of processes that are either in a runnable or un‐
+       interruptable state.  A process in a runnable state is either using the CPU or waiting to use
+       the  CPU.   A process in uninterruptable state is waiting for some I/O access, eg waiting for
+       disk.
+
+
 📖 What is Load Average?
 The load average is a measure of system activity, 
 showing the average number of processes that are either running or waiting for CPU or I/O over a period of time.
