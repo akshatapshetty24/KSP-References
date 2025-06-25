@@ -1388,10 +1388,6 @@ https://node01-traf.lab.uprising.t-mobile.com:5634/vcs/admin/application_health.
 https://node01-traf.lab.uprising.t-mobile.com:5634/
 
 
-CRQ000000037626  || Q2 2024 OS Patching & Veritas upgrade on Prod AWS US-EAST BSCS Veritas Servers[7] (Passive site)
-CRQ000000037820 || Resume VVR replication between Prod AWS BSCS US-WEST and BSCS US-EAST Servers
-CRQ000000038551 - Q4 2024 OS Patching & Veritas upgrade on Prod AWS US-EAST BSCS Veritas Servers[7] (Passive site)
-White board & SIS Review - VVR Live | 8th NOD | CRQ000000036817
 
 
 https://sort.veritas.com/documents/doc_details/vie/7.4.2/Linux/Documentation/
@@ -1438,14 +1434,7 @@ node01 node02
    https://www.veritas.com/content/support/en_US/downloads/update.UPD156439
 
 
-Server	NMNet	COSNet
-node01	10.253.10.131	10.5.101.53
-node02	10.253.10.132	10.5.101.54
-pl-l1-aux-nfs-01	10.253.10.133	10.5.101.55
-pl-l1-aux-nfs-02	10.253.10.134	10.5.101.56
 
-
-192.168.47.0/24
 
 
 [root@node02 ~]# ip a
@@ -1501,10 +1490,6 @@ Enter the NIC for the low-priority heartbeat link on node01: [b,q,?] (ens224)
 
 
 
-[root@npe-esa-pfa-w2a-rp1 repos]# ll /repos/infoscale_7.4.2_base
-total 1048512
--rw-r-----. 1 root root 973012992 Jun 20 02:45 Veritas_InfoScale_7.4.2_RHEL.tar.gz
-[root@npe-esa-pfa-w2a-rp1 repos]#
 
 
  Veritas InfoScale Enterprise 7.4.2 Install Program
@@ -1804,25 +1789,7 @@ Log review	tail -f /var/VRTSvcs/log/engine_A.log
 rpm -qa | grep -i vrts
 
 
-[root@npe-esa-pfa-w2a-rp1 infoscale_7.4.2_base]# ll
-total 2795936
--rw-r-----. 1 root root      95793 Jun 20 11:58 cpi-Patch-7.4.2.4000.tar.gz
--rw-r-----. 1 root root 1228424669 Jun 20 11:58 infoscale-rhel8_x86_64-Patch-7.4.2.5600.tar.gz
--rw-r-----. 1 root root 1634510709 Jun 20 02:48 Veritas_InfoScale_7.4.2_RHEL.tar.gz
-[root@npe-esa-pfa-w2a-rp1 infoscale_7.4.2_base]#
 
-[root@node01 ~]# cd /root/vcs_files/
-
-
-scp -p npe-esa-pfa-w2a-rp1:/repos/infoscale_7.4.2_base/Veritas_InfoScale_7.4.2_RHEL.tar.gz .
-scp -p npe-esa-pfa-w2a-rp1:/repos/infoscale_7.4.2_base/infoscale-rhel8_x86_64-Patch-7.4.2.5600.tar.gz .
-scp -p npe-esa-pfa-w2a-rp1:/repos/infoscale_7.4.2_base/cpi-Patch-7.4.2.4000.tar.gz .
-
-swap 12GB
-/ 50GB
-/tmp 15GB
-/var 20GB
-/var/log 15GB
 
 
 lvextend -r -L 15G -n /dev/mapper/vg_01-LogVol02
@@ -1876,9 +1843,6 @@ lvextend -r -L 15G -n  /dev/mapper/vg_01-LogVol04
 df -Th ; vgs
 
 
-scp -p npe-esa-pfa-w2a-rp1:/repos/infoscale_7.4.2_base/Veritas_InfoScale_7.4.2_RHEL.tar.gz .
-
-Veritas InfoScale Enterprise Install did not complete successfully
 
 VRTSvxvm rpm failed to install on node01
 VRTSvxvm rpm failed to install on node02
@@ -2278,7 +2242,7 @@ INSTALLING THE PATCH
    ./installer -require /tmp/CPI_7.4.2_P40.pl
 
 
-Q2 2024 OS Patching along with Veritas upgrade on Prod AWS US-WEST BSCS Veritas Servers [7] (Active site).
+
 
 VCS upgrade WEST:
 ===============
@@ -2297,12 +2261,6 @@ To install the above patch your command will be below:
 
 For CP nodes:-
 
-#cd /root/veritas/Q12024/
-# ./installVRTSinfoscale742P4900 -require /root/veritas/Q12024/patches/CPI_7.4.2_P38.pl prd-esa-bsa-e1b-cp4
-#cd /root/veritas/Q12024/
-# ./installVRTSinfoscale742P4900 -require /root/veritas/Q12024/patches/CPI_7.4.2_P38.pl prd-esa-bsa-e1c-cp6
-#cd /root/veritas/Q12024/
-# ./installVRTSinfoscale742P4900 -require /root/veritas/Q12024/patches/CPI_7.4.2_P38.pl prd-esa-bsa-e1b-cp5
 
 For VCS nodes:-
 The HofFix [HF] is the recommended for the environment: (All nodes one after other except CP nodes)
@@ -2314,7 +2272,6 @@ Select the appropriate RPMs for your system, and upgrade to the new patch.
 
 After completing above rpm on all the nodes then start actual VCS upgrade.
 #cd /root/veritas/Q12024/
-# ./installVRTSinfoscale742P4900 -require /root/veritas/Q12024/patches/CPI_7.4.2_P38.pl prd-esa-bsa-e1b-a09  prd-esa-bsa-e1c-a10 prd-esa-bsa-e1b-a11 prd-esa-bsa-e1c-a12
 
 Once VCS upgrade done, then do OS patching. 
 •	Unix team proceeds with patching of above servers using below commands.
@@ -2330,10 +2287,7 @@ For RHEL 8.9
 
 •	Determine the CVM master :
 
-[root@prd-esa-bsa-w2a-a11 ~]# vxdctl -c mode
-mode: enabled: cluster active - SLAVE
-master: prd-esa-bsa-w2b-a10
-[root@prd-esa-bsa-w2a-a11 ~]#
+
 
 •	Start VVR replication 
 
@@ -2605,9 +2559,7 @@ o	Trigger below cmd for doing autosync.
   225  20/06/25 03:14:47 cd vcs_files/
   226  20/06/25 03:14:48 ll
   227  20/06/25 03:14:50 pwd
-  228  20/06/25 03:15:07 ping npe-esa-pfa-w2a-rp1
-  229  20/06/25 03:15:29 scp -p npe-esa-pfa-w2a-rp1:/repos/infoscale_7.4.2_base/Veritas_InfoScale_7.4.2_RHEL.tar.gz .
-  230  20/06/25 03:16:05 ll
+
   231  20/06/25 03:16:27 tar -xvf Veritas_InfoScale_7.4.2_RHEL.tar.gz
   232  20/06/25 03:16:52 ll
   233  20/06/25 03:16:56 du -sh
@@ -2652,9 +2604,7 @@ o	Trigger below cmd for doing autosync.
   272  20/06/25 17:48:38 cd /root/vcs_files/
   273  20/06/25 17:48:39 ll
   274  20/06/25 17:48:54 pwd
-  275  20/06/25 17:49:20 scp -p npe-esa-pfa-w2a-rp1:/repos/infoscale_7.4.2_base/infoscale-rhel8_x86_64-Patch-7.4.2.5600.tar.gz .
-  276  20/06/25 17:51:20 scp -p npe-esa-pfa-w2a-rp1:/repos/infoscale_7.4.2_base/cpi-Patch-7.4.2.4000.tar.gz .
-  277  20/06/25 17:51:28 ll
+
   278  20/06/25 17:51:43 tar -xvf infoscale-rhel8_x86_64-Patch-7.4.2.5600.tar.gz
   279  20/06/25 17:51:57 ll
   280  20/06/25 17:52:24 mkdir cpipatch
