@@ -373,13 +373,13 @@ group infa_sg (
 
 
 
-[root@pl-l1-aux-app-01 VRTS]# lltstat -nvv
+[root@node01 VRTS]# lltstat -nvv
 LLT node information:
     Node                 State    Link  Status  Address
-   * 0 pl-l1-aux-app-01  OPEN
+   * 0 node01  OPEN
                                   ens161   UP      00:50:56:AC:F7:BA
                                   ens224   UP      00:50:56:AC:6C:77
-     1 pl-l1-aux-app-02  OPEN
+     1 node02  OPEN
                                   ens161   UP      00:50:56:AC:15:C4
                                   ens224   UP      00:50:56:AC:26:92
      2                   CONNWAIT
@@ -387,19 +387,19 @@ LLT node information:
                                   ens224   DOWN
 
 
-[root@pl-l1-aux-app-02 ~]# lltstat -nvv
+[root@node02 ~]# lltstat -nvv
 LLT node information:
     Node                 State    Link  Status  Address
-     0 pl-l1-aux-app-01  OPEN
+     0 node01  OPEN
                                   ens161   UP      00:50:56:AC:F7:BA
                                   ens224   UP      00:50:56:AC:6C:77
-   * 1 pl-l1-aux-app-02  OPEN
+   * 1 node02  OPEN
                                   ens161   UP      00:50:56:AC:15:C4
                                   ens224   UP      00:50:56:AC:26:92
 
 
 
-[root@pl-l1-aux-app-02 ~]# vxfenadm -d
+[root@node02 ~]# vxfenadm -d
 
 I/O Fencing Cluster Information:
 ================================
@@ -408,14 +408,14 @@ I/O Fencing Cluster Information:
  Fencing Mode: MAJORITY
  Cluster Members:
 
-          0 (pl-l1-aux-app-01)
-        * 1 (pl-l1-aux-app-02)
+          0 (node01)
+        * 1 (node02)
 
  RFSM State Information:
         node   0 in state  8 (running)
         node   1 in state  8 (running)
 
-[root@pl-l1-aux-app-02 ~]#
+[root@node02 ~]#
 
 
 hagrp -online infa_sg -sys node01
@@ -423,227 +423,227 @@ VCS WARNING V-16-1-10159 Group infa_sg is auto-disabled in cluster. This can hap
 
 
 
-[root@pl-l1-aux-app-01 ~]# hagrp -clear infa_sg -sys pl-l1-aux-app-01
+[root@node01 ~]# hagrp -clear infa_sg -sys node01
 VCS NOTICE V-16-1-10145 There are no non-persistent resources in the group that are faulted on the specified systems
-[root@pl-l1-aux-app-01 ~]# hagrp -clear infa_sg -sys pl-l1-aux-app-02
+[root@node01 ~]# hagrp -clear infa_sg -sys node02
 VCS NOTICE V-16-1-10145 There are no non-persistent resources in the group that are faulted on the specified systems
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]#
 
 
-[root@pl-l1-aux-app-01 ~]# hares -state
+[root@node01 ~]# hares -state
 #Resource     Attribute             System           Value
-cvm_clus      State                 pl-l1-aux-app-01 ONLINE
-cvm_clus      State                 pl-l1-aux-app-02 ONLINE
-cvm_vxconfigd State                 pl-l1-aux-app-01 ONLINE
-cvm_vxconfigd State                 pl-l1-aux-app-02 ONLINE
-infa_mount    State                 pl-l1-aux-app-01 OFFLINE|STATE UNKNOWN
-infa_mount    State                 pl-l1-aux-app-02 OFFLINE|STATE UNKNOWN
-vxattachd     State                 pl-l1-aux-app-01 ONLINE
-vxattachd     State                 pl-l1-aux-app-02 ONLINE
-vxfsckd       State                 pl-l1-aux-app-01 ONLINE
-vxfsckd       State                 pl-l1-aux-app-02 ONLINE
-[root@pl-l1-aux-app-01 ~]#
+cvm_clus      State                 node01 ONLINE
+cvm_clus      State                 node02 ONLINE
+cvm_vxconfigd State                 node01 ONLINE
+cvm_vxconfigd State                 node02 ONLINE
+infa_mount    State                 node01 OFFLINE|STATE UNKNOWN
+infa_mount    State                 node02 OFFLINE|STATE UNKNOWN
+vxattachd     State                 node01 ONLINE
+vxattachd     State                 node02 ONLINE
+vxfsckd       State                 node01 ONLINE
+vxfsckd       State                 node02 ONLINE
+[root@node01 ~]#
 
 
 
-infa_mount    State                 pl-l1-aux-app-01 OFFLINE|STATE UNKNOWN
-infa_mount    State                 pl-l1-aux-app-02 OFFLINE|STATE UNKNOWN
+infa_mount    State                 node01 OFFLINE|STATE UNKNOWN
+infa_mount    State                 node02 OFFLINE|STATE UNKNOWN
 
 
-hares -enable infa_mount -sys pl-l1-aux-app-01
-hares -enable infa_mount -sys pl-l1-aux-app-02
+hares -enable infa_mount -sys node01
+hares -enable infa_mount -sys node02
 
 
 hares -enable infa_mount -sys node01
 VCS WARNING V-16-1-10603 Unknown option: -enable
 
-[root@pl-l1-aux-app-01 ~]# hares -online infa_mount -sys pl-l1-aux-app-01
+[root@node01 ~]# hares -online infa_mount -sys node01
 VCS WARNING V-16-1-10282 Group infa_sg for resource infa_mount is auto-disabled in cluster
-[root@pl-l1-aux-app-01 ~]# hares -online infa_mount -sys pl-l1-aux-app-02
+[root@node01 ~]# hares -online infa_mount -sys node02
 VCS WARNING V-16-1-10282 Group infa_sg for resource infa_mount is auto-disabled in cluster
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]#
 
 
-[root@pl-l1-aux-app-01 ~]# hagrp -state infa_sg
+[root@node01 ~]# hagrp -state infa_sg
 #Group       Attribute             System           Value
-infa_sg      State                 pl-l1-aux-app-01 |OFFLINE|
-infa_sg      State                 pl-l1-aux-app-02 |OFFLINE|
-[root@pl-l1-aux-app-01 ~]#
+infa_sg      State                 node01 |OFFLINE|
+infa_sg      State                 node02 |OFFLINE|
+[root@node01 ~]#
 
 
-[root@pl-l1-aux-app-01 ~]# hagrp -autoenable infa_sg -sys pl-l1-aux-app-01
-[root@pl-l1-aux-app-01 ~]# hagrp -autoenable infa_sg -sys pl-l1-aux-app-02
-[root@pl-l1-aux-app-01 ~]# hastatus -sum
-
--- SYSTEM STATE
--- System               State                Frozen
-
-A  pl-l1-aux-app-01     RUNNING              0
-A  pl-l1-aux-app-02     RUNNING              0
-
--- GROUP STATE
--- Group           System               Probed     AutoDisabled    State
-
-B  cvm             pl-l1-aux-app-01     Y          N               ONLINE
-B  cvm             pl-l1-aux-app-02     Y          N               ONLINE
-B  infa_sg         pl-l1-aux-app-01     N          N               OFFLINE
-B  infa_sg         pl-l1-aux-app-02     N          N               OFFLINE
-
--- RESOURCES NOT PROBED
--- Group           Type                 Resource             System
-
-E  infa_sg         Mount                infa_mount           pl-l1-aux-app-01
-E  infa_sg         Mount                infa_mount           pl-l1-aux-app-02
-[root@pl-l1-aux-app-01 ~]# hares -online infa_mount -sys pl-l1-aux-app-01
-VCS WARNING V-16-1-10283 Resource has not been probed on system pl-l1-aux-app-01
-[root@pl-l1-aux-app-01 ~]#
-
-[root@pl-l1-aux-app-01 ~]# hares -probe infa_mount -sys pl-l1-aux-app-01
-[root@pl-l1-aux-app-01 ~]# hares -probe infa_mount -sys pl-l1-aux-app-02
-[root@pl-l1-aux-app-01 ~]# hastatus -sum
+[root@node01 ~]# hagrp -autoenable infa_sg -sys node01
+[root@node01 ~]# hagrp -autoenable infa_sg -sys node02
+[root@node01 ~]# hastatus -sum
 
 -- SYSTEM STATE
 -- System               State                Frozen
 
-A  pl-l1-aux-app-01     RUNNING              0
-A  pl-l1-aux-app-02     RUNNING              0
+A  node01     RUNNING              0
+A  node02     RUNNING              0
 
 -- GROUP STATE
 -- Group           System               Probed     AutoDisabled    State
 
-B  cvm             pl-l1-aux-app-01     Y          N               ONLINE
-B  cvm             pl-l1-aux-app-02     Y          N               ONLINE
-B  infa_sg         pl-l1-aux-app-01     N          N               OFFLINE
-B  infa_sg         pl-l1-aux-app-02     N          N               OFFLINE
+B  cvm             node01     Y          N               ONLINE
+B  cvm             node02     Y          N               ONLINE
+B  infa_sg         node01     N          N               OFFLINE
+B  infa_sg         node02     N          N               OFFLINE
 
 -- RESOURCES NOT PROBED
 -- Group           Type                 Resource             System
 
-E  infa_sg         Mount                infa_mount           pl-l1-aux-app-01
-E  infa_sg         Mount                infa_mount           pl-l1-aux-app-02
-[root@pl-l1-aux-app-01 ~]#
+E  infa_sg         Mount                infa_mount           node01
+E  infa_sg         Mount                infa_mount           node02
+[root@node01 ~]# hares -online infa_mount -sys node01
+VCS WARNING V-16-1-10283 Resource has not been probed on system node01
+[root@node01 ~]#
+
+[root@node01 ~]# hares -probe infa_mount -sys node01
+[root@node01 ~]# hares -probe infa_mount -sys node02
+[root@node01 ~]# hastatus -sum
+
+-- SYSTEM STATE
+-- System               State                Frozen
+
+A  node01     RUNNING              0
+A  node02     RUNNING              0
+
+-- GROUP STATE
+-- Group           System               Probed     AutoDisabled    State
+
+B  cvm             node01     Y          N               ONLINE
+B  cvm             node02     Y          N               ONLINE
+B  infa_sg         node01     N          N               OFFLINE
+B  infa_sg         node02     N          N               OFFLINE
+
+-- RESOURCES NOT PROBED
+-- Group           Type                 Resource             System
+
+E  infa_sg         Mount                infa_mount           node01
+E  infa_sg         Mount                infa_mount           node02
+[root@node01 ~]#
 
 
-[root@pl-l1-aux-app-01 ~]# hares -online infa_mount -sys pl-l1-aux-app-01
-VCS WARNING V-16-1-10283 Resource has not been probed on system pl-l1-aux-app-01
-[root@pl-l1-aux-app-01 ~]# hares -online infa_mount -sys pl-l1-aux-app-02
-VCS WARNING V-16-1-10283 Resource has not been probed on system pl-l1-aux-app-02
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]# hares -online infa_mount -sys node01
+VCS WARNING V-16-1-10283 Resource has not been probed on system node01
+[root@node01 ~]# hares -online infa_mount -sys node02
+VCS WARNING V-16-1-10283 Resource has not been probed on system node02
+[root@node01 ~]#
 
 
-[root@pl-l1-aux-app-01 ~]# hares -state
+[root@node01 ~]# hares -state
 #Resource     Attribute             System           Value
-cvm_clus      State                 pl-l1-aux-app-01 ONLINE
-cvm_clus      State                 pl-l1-aux-app-02 ONLINE
-cvm_vxconfigd State                 pl-l1-aux-app-01 ONLINE
-cvm_vxconfigd State                 pl-l1-aux-app-02 ONLINE
-infa_mount    State                 pl-l1-aux-app-01 OFFLINE|STATE UNKNOWN
-infa_mount    State                 pl-l1-aux-app-02 OFFLINE|STATE UNKNOWN
-vxattachd     State                 pl-l1-aux-app-01 ONLINE
-vxattachd     State                 pl-l1-aux-app-02 ONLINE
-vxfsckd       State                 pl-l1-aux-app-01 ONLINE
-vxfsckd       State                 pl-l1-aux-app-02 ONLINE
-[root@pl-l1-aux-app-01 ~]# hares -online infa_mount -sys pl-l1-aux-app-01
-VCS WARNING V-16-1-10283 Resource has not been probed on system pl-l1-aux-app-01
-[root@pl-l1-aux-app-01 ~]# hares -online infa_mount -sys pl-l1-aux-app-02
-VCS WARNING V-16-1-10283 Resource has not been probed on system pl-l1-aux-app-02
-[root@pl-l1-aux-app-01 ~]# hagrp -state
+cvm_clus      State                 node01 ONLINE
+cvm_clus      State                 node02 ONLINE
+cvm_vxconfigd State                 node01 ONLINE
+cvm_vxconfigd State                 node02 ONLINE
+infa_mount    State                 node01 OFFLINE|STATE UNKNOWN
+infa_mount    State                 node02 OFFLINE|STATE UNKNOWN
+vxattachd     State                 node01 ONLINE
+vxattachd     State                 node02 ONLINE
+vxfsckd       State                 node01 ONLINE
+vxfsckd       State                 node02 ONLINE
+[root@node01 ~]# hares -online infa_mount -sys node01
+VCS WARNING V-16-1-10283 Resource has not been probed on system node01
+[root@node01 ~]# hares -online infa_mount -sys node02
+VCS WARNING V-16-1-10283 Resource has not been probed on system node02
+[root@node01 ~]# hagrp -state
 #Group       Attribute             System           Value
-cvm          State                 pl-l1-aux-app-01 |ONLINE|
-cvm          State                 pl-l1-aux-app-02 |ONLINE|
-infa_sg      State                 pl-l1-aux-app-01 |OFFLINE|
-infa_sg      State                 pl-l1-aux-app-02 |OFFLINE|
-[root@pl-l1-aux-app-01 ~]#
+cvm          State                 node01 |ONLINE|
+cvm          State                 node02 |ONLINE|
+infa_sg      State                 node01 |OFFLINE|
+infa_sg      State                 node02 |OFFLINE|
+[root@node01 ~]#
 
 
 
-[root@pl-l1-aux-app-01 ~]# haconf -makerw
-[root@pl-l1-aux-app-01 ~]# vxdctl -c mode
+[root@node01 ~]# haconf -makerw
+[root@node01 ~]# vxdctl -c mode
 mode: enabled: cluster active - MASTER
-master: pl-l1-aux-app-01
-[root@pl-l1-aux-app-01 ~]# hagrp -autoenable infa_sg -sys pl-l1-aux-app-01
-[root@pl-l1-aux-app-01 ~]# hagrp -autoenable infa_sg -sys pl-l1-aux-app-02
-[root@pl-l1-aux-app-01 ~]# hastatus -sum
+master: node01
+[root@node01 ~]# hagrp -autoenable infa_sg -sys node01
+[root@node01 ~]# hagrp -autoenable infa_sg -sys node02
+[root@node01 ~]# hastatus -sum
 
 -- SYSTEM STATE
 -- System               State                Frozen
 
-A  pl-l1-aux-app-01     RUNNING              0
-A  pl-l1-aux-app-02     RUNNING              0
+A  node01     RUNNING              0
+A  node02     RUNNING              0
 
 -- GROUP STATE
 -- Group           System               Probed     AutoDisabled    State
 
-B  cvm             pl-l1-aux-app-01     Y          N               ONLINE
-B  cvm             pl-l1-aux-app-02     Y          N               ONLINE
-B  infa_sg         pl-l1-aux-app-01     N          N               OFFLINE
-B  infa_sg         pl-l1-aux-app-02     N          N               OFFLINE
+B  cvm             node01     Y          N               ONLINE
+B  cvm             node02     Y          N               ONLINE
+B  infa_sg         node01     N          N               OFFLINE
+B  infa_sg         node02     N          N               OFFLINE
 
 -- RESOURCES NOT PROBED
 -- Group           Type                 Resource             System
 
-E  infa_sg         Mount                infa_mount           pl-l1-aux-app-01
-E  infa_sg         Mount                infa_mount           pl-l1-aux-app-02
-[root@pl-l1-aux-app-01 ~]#
+E  infa_sg         Mount                infa_mount           node01
+E  infa_sg         Mount                infa_mount           node02
+[root@node01 ~]#
 
-[root@pl-l1-aux-app-01 ~]# hagrp -online infa_sg -sys pl-l1-aux-app-01
-VCS WARNING V-16-1-10162 Group infa_sg has not been fully probed on system pl-l1-aux-app-01
-[root@pl-l1-aux-app-01 ~]# hagrp -online infa_sg -sys pl-l1-aux-app-02
-VCS WARNING V-16-1-10162 Group infa_sg has not been fully probed on system pl-l1-aux-app-02
-[root@pl-l1-aux-app-01 ~]# hares -probe infa_mount -sys pl-l1-aux-app-01
-[root@pl-l1-aux-app-01 ~]# hares -probe infa_mount -sys pl-l1-aux-app-02
-[root@pl-l1-aux-app-01 ~]# hastatus -sum
+[root@node01 ~]# hagrp -online infa_sg -sys node01
+VCS WARNING V-16-1-10162 Group infa_sg has not been fully probed on system node01
+[root@node01 ~]# hagrp -online infa_sg -sys node02
+VCS WARNING V-16-1-10162 Group infa_sg has not been fully probed on system node02
+[root@node01 ~]# hares -probe infa_mount -sys node01
+[root@node01 ~]# hares -probe infa_mount -sys node02
+[root@node01 ~]# hastatus -sum
 
 -- SYSTEM STATE
 -- System               State                Frozen
 
-A  pl-l1-aux-app-01     RUNNING              0
-A  pl-l1-aux-app-02     RUNNING              0
+A  node01     RUNNING              0
+A  node02     RUNNING              0
 
 -- GROUP STATE
 -- Group           System               Probed     AutoDisabled    State
 
-B  cvm             pl-l1-aux-app-01     Y          N               ONLINE
-B  cvm             pl-l1-aux-app-02     Y          N               ONLINE
-B  infa_sg         pl-l1-aux-app-01     N          N               OFFLINE
-B  infa_sg         pl-l1-aux-app-02     N          N               OFFLINE
+B  cvm             node01     Y          N               ONLINE
+B  cvm             node02     Y          N               ONLINE
+B  infa_sg         node01     N          N               OFFLINE
+B  infa_sg         node02     N          N               OFFLINE
 
 -- RESOURCES NOT PROBED
 -- Group           Type                 Resource             System
 
-E  infa_sg         Mount                infa_mount           pl-l1-aux-app-01
-E  infa_sg         Mount                infa_mount           pl-l1-aux-app-02
-[root@pl-l1-aux-app-01 ~]#
+E  infa_sg         Mount                infa_mount           node01
+E  infa_sg         Mount                infa_mount           node02
+[root@node01 ~]#
 
 
 
-[root@pl-l1-aux-app-01 ~]# hagrp -state infa_sg
+[root@node01 ~]# hagrp -state infa_sg
 #Group       Attribute             System           Value
-infa_sg      State                 pl-l1-aux-app-01 |OFFLINE|
-infa_sg      State                 pl-l1-aux-app-02 |OFFLINE|
-[root@pl-l1-aux-app-01 ~]# hares -state infa_mount
+infa_sg      State                 node01 |OFFLINE|
+infa_sg      State                 node02 |OFFLINE|
+[root@node01 ~]# hares -state infa_mount
 #Resource    Attribute             System           Value
-infa_mount   State                 pl-l1-aux-app-01 OFFLINE|STATE UNKNOWN
-infa_mount   State                 pl-l1-aux-app-02 OFFLINE|STATE UNKNOWN
-[root@pl-l1-aux-app-01 ~]#
+infa_mount   State                 node01 OFFLINE|STATE UNKNOWN
+infa_mount   State                 node02 OFFLINE|STATE UNKNOWN
+[root@node01 ~]#
 
 
 
-[root@pl-l1-aux-app-01 ~]# hares -display infa_mount | grep ArgListValues
-infa_mount   ArgListValues         pl-l1-aux-app-01 MountPoint  1       /infa_shared    BlockDevice     1       /dev/vx/dsk/sharedg/share_vol FSType  1       vxfs    MountOpt        1       cluster FsckOpt 1       ""      SnapUmount      1       0       CkptUmount   11       BindUmount      1       1       OptCheck        1       0       CreateMntPt     1       0       MntPtPermission 1       ""   MntPtOwner       1       ""      MntPtGroup      1       ""      AccessPermissionChk     1       0       RecursiveMnt    1       0    VxFSMountLock    1       1       CacheRestoreAccess      1       0
-infa_mount   ArgListValues         pl-l1-aux-app-02 MountPoint  1       /infa_shared    BlockDevice     1       /dev/vx/dsk/sharedg/share_vol FSType  1       vxfs    MountOpt        1       cluster FsckOpt 1       ""      SnapUmount      1       0       CkptUmount   11       BindUmount      1       1       OptCheck        1       0       CreateMntPt     1       0       MntPtPermission 1       ""   MntPtOwner       1       ""      MntPtGroup      1       ""      AccessPermissionChk     1       0       RecursiveMnt    1       0    VxFSMountLock    1       1       CacheRestoreAccess      1       0
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]# hares -display infa_mount | grep ArgListValues
+infa_mount   ArgListValues         node01 MountPoint  1       /infa_shared    BlockDevice     1       /dev/vx/dsk/sharedg/share_vol FSType  1       vxfs    MountOpt        1       cluster FsckOpt 1       ""      SnapUmount      1       0       CkptUmount   11       BindUmount      1       1       OptCheck        1       0       CreateMntPt     1       0       MntPtPermission 1       ""   MntPtOwner       1       ""      MntPtGroup      1       ""      AccessPermissionChk     1       0       RecursiveMnt    1       0    VxFSMountLock    1       1       CacheRestoreAccess      1       0
+infa_mount   ArgListValues         node02 MountPoint  1       /infa_shared    BlockDevice     1       /dev/vx/dsk/sharedg/share_vol FSType  1       vxfs    MountOpt        1       cluster FsckOpt 1       ""      SnapUmount      1       0       CkptUmount   11       BindUmount      1       1       OptCheck        1       0       CreateMntPt     1       0       MntPtPermission 1       ""   MntPtOwner       1       ""      MntPtGroup      1       ""      AccessPermissionChk     1       0       RecursiveMnt    1       0    VxFSMountLock    1       1       CacheRestoreAccess      1       0
+[root@node01 ~]#
 
 
 
-infa_mount   ArgListValues         pl-l1-aux-app-01 MountPoint  1       /infa_shared    BlockDevice     1       /dev/vx/dsk/sharedg/share_vol FSType  1       vxfs    MountOpt        1       cluster FsckOpt 1       ""      SnapUmount      1       0       CkptUmount   11       BindUmount      1       1       OptCheck        1       0       CreateMntPt     1       0       MntPtPermission 1       ""   MntPtOwner       1       ""      MntPtGroup      1       ""      AccessPermissionChk     1       0       RecursiveMnt    1       0    VxFSMountLock    1       1       CacheRestoreAccess      1       0
+infa_mount   ArgListValues         node01 MountPoint  1       /infa_shared    BlockDevice     1       /dev/vx/dsk/sharedg/share_vol FSType  1       vxfs    MountOpt        1       cluster FsckOpt 1       ""      SnapUmount      1       0       CkptUmount   11       BindUmount      1       1       OptCheck        1       0       CreateMntPt     1       0       MntPtPermission 1       ""   MntPtOwner       1       ""      MntPtGroup      1       ""      AccessPermissionChk     1       0       RecursiveMnt    1       0    VxFSMountLock    1       1       CacheRestoreAccess      1       0
 
 
 
-infa_mount   ArgListValues         pl-l1-aux-app-02 MountPoint  1       /infa_shared    BlockDevice     1       /dev/vx/dsk/sharedg/share_vol FSType  1       vxfs    MountOpt        1       cluster FsckOpt 1       ""      SnapUmount      1       0       CkptUmount   11       BindUmount      1       1       OptCheck        1       0       CreateMntPt     1       0       MntPtPermission 1       ""   MntPtOwner       1       ""      MntPtGroup      1       ""      AccessPermissionChk     1       0       RecursiveMnt    1       0    VxFSMountLock    1       1       CacheRestoreAccess      1       0
+infa_mount   ArgListValues         node02 MountPoint  1       /infa_shared    BlockDevice     1       /dev/vx/dsk/sharedg/share_vol FSType  1       vxfs    MountOpt        1       cluster FsckOpt 1       ""      SnapUmount      1       0       CkptUmount   11       BindUmount      1       1       OptCheck        1       0       CreateMntPt     1       0       MntPtPermission 1       ""   MntPtOwner       1       ""      MntPtGroup      1       ""      AccessPermissionChk     1       0       RecursiveMnt    1       0    VxFSMountLock    1       1       CacheRestoreAccess      1       0
 
 
-[root@pl-l1-aux-app-01 ~]# hares -modify infa_mount ArgListValues { \
+[root@node01 ~]# hares -modify infa_mount ArgListValues { \
 > "MountPoint" "/infa_shared" \
 > "BlockDevice" "/dev/vx/dsk/sharedg/share_vol" \
 > "FSType" "vxfs" \
@@ -662,111 +662,111 @@ infa_mount   ArgListValues         pl-l1-aux-app-02 MountPoint  1       /infa_sh
 > "VxFSMountLock" "1" \
 > "CacheRestoreAccess" "0" }
 VCS WARNING V-16-1-10576 System-defined attributes may not be modified
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]#
 
-[root@pl-l1-aux-app-01 ~]# hares -modify infa_mount ArgListValues { "MountPoint" "/infa_shared" "BlockDevice" "/dev/vx/dsk/sharedg/share_vol" "FSType" "vxfs" "MountOpt" "cluster" "FsckOpt" "" "SnapUmount" "0" "CkptUmount" "1" "BindUmount" "1" "OptCheck" "0" "CreateMntPt" "0" "MntPtPermission" "" "MntPtOwner" "" "MntPtGroup" "" "AccessPermissionChk" "0" "RecursiveMnt" "0" "VxFSMountLock" "1" "CacheRestoreAccess" "0" }
+[root@node01 ~]# hares -modify infa_mount ArgListValues { "MountPoint" "/infa_shared" "BlockDevice" "/dev/vx/dsk/sharedg/share_vol" "FSType" "vxfs" "MountOpt" "cluster" "FsckOpt" "" "SnapUmount" "0" "CkptUmount" "1" "BindUmount" "1" "OptCheck" "0" "CreateMntPt" "0" "MntPtPermission" "" "MntPtOwner" "" "MntPtGroup" "" "AccessPermissionChk" "0" "RecursiveMnt" "0" "VxFSMountLock" "1" "CacheRestoreAccess" "0" }
 VCS WARNING V-16-1-10576 System-defined attributes may not be modified
-[root@pl-l1-aux-app-01 ~]# 
+[root@node01 ~]# 
 
 
 
-[root@pl-l1-aux-app-01 ~]# haconf -makerw
-[root@pl-l1-aux-app-01 ~]# hares -delete infa_mount
-[root@pl-l1-aux-app-01 ~]# hastatus -sum
+[root@node01 ~]# haconf -makerw
+[root@node01 ~]# hares -delete infa_mount
+[root@node01 ~]# hastatus -sum
 
 -- SYSTEM STATE
 -- System               State                Frozen
 
-A  pl-l1-aux-app-01     RUNNING              0
-A  pl-l1-aux-app-02     RUNNING              0
+A  node01     RUNNING              0
+A  node02     RUNNING              0
 
 -- GROUP STATE
 -- Group           System               Probed     AutoDisabled    State
 
-B  cvm             pl-l1-aux-app-01     Y          N               ONLINE
-B  cvm             pl-l1-aux-app-02     Y          N               ONLINE
-B  infa_sg         pl-l1-aux-app-01     Y          N               OFFLINE
-B  infa_sg         pl-l1-aux-app-02     Y          N               OFFLINE
-[root@pl-l1-aux-app-01 ~]# hares -add infa_mount CFSMount infa_sg
+B  cvm             node01     Y          N               ONLINE
+B  cvm             node02     Y          N               ONLINE
+B  infa_sg         node01     Y          N               OFFLINE
+B  infa_sg         node02     Y          N               OFFLINE
+[root@node01 ~]# hares -add infa_mount CFSMount infa_sg
 VCS NOTICE V-16-1-10242 Resource added. Enabled attribute must be set before agent monitors
-[root@pl-l1-aux-app-01 ~]# hares -modify infa_mount MountPoint "/infa_shared"
-[root@pl-l1-aux-app-01 ~]# hares -modify infa_mount BlockDevice "/dev/vx/dsk/sharedg/share_vol"
-[root@pl-l1-aux-app-01 ~]# hares -modify infa_mount MountOpt "cluster"
-[root@pl-l1-aux-app-01 ~]# hares -display infa_mount | grep ArgListValues
-infa_mount   ArgListValues         pl-l1-aux-app-01
-infa_mount   ArgListValues         pl-l1-aux-app-02
-[root@pl-l1-aux-app-01 ~]# hastatus -sum
+[root@node01 ~]# hares -modify infa_mount MountPoint "/infa_shared"
+[root@node01 ~]# hares -modify infa_mount BlockDevice "/dev/vx/dsk/sharedg/share_vol"
+[root@node01 ~]# hares -modify infa_mount MountOpt "cluster"
+[root@node01 ~]# hares -display infa_mount | grep ArgListValues
+infa_mount   ArgListValues         node01
+infa_mount   ArgListValues         node02
+[root@node01 ~]# hastatus -sum
 
 -- SYSTEM STATE
 -- System               State                Frozen
 
-A  pl-l1-aux-app-01     RUNNING              0
-A  pl-l1-aux-app-02     RUNNING              0
+A  node01     RUNNING              0
+A  node02     RUNNING              0
 
 -- GROUP STATE
 -- Group           System               Probed     AutoDisabled    State
 
-B  cvm             pl-l1-aux-app-01     Y          N               ONLINE
-B  cvm             pl-l1-aux-app-02     Y          N               ONLINE
-B  infa_sg         pl-l1-aux-app-01     Y          N               OFFLINE
-B  infa_sg         pl-l1-aux-app-02     Y          N               OFFLINE
+B  cvm             node01     Y          N               ONLINE
+B  cvm             node02     Y          N               ONLINE
+B  infa_sg         node01     Y          N               OFFLINE
+B  infa_sg         node02     Y          N               OFFLINE
 
 -- RESOURCES NOT PROBED
 -- Group           Type                 Resource             System
 
-E  infa_sg         CFSMount             infa_mount           pl-l1-aux-app-01
-E  infa_sg         CFSMount             infa_mount           pl-l1-aux-app-02
-[root@pl-l1-aux-app-01 ~]#
+E  infa_sg         CFSMount             infa_mount           node01
+E  infa_sg         CFSMount             infa_mount           node02
+[root@node01 ~]#
 
 
 
-[root@pl-l1-aux-app-01 ~]# hares -modify infa_mount Enabled 1
+[root@node01 ~]# hares -modify infa_mount Enabled 1
 VCS WARNING V-16-1-11335 Configuration must be ReadWrite : Use haconf -makerw
-[root@pl-l1-aux-app-01 ~]# haconf -makerw
-[root@pl-l1-aux-app-01 ~]# hares -modify infa_mount Enabled 1
-[root@pl-l1-aux-app-01 ~]# hares -display infa_mount | grep Enabled
+[root@node01 ~]# haconf -makerw
+[root@node01 ~]# hares -modify infa_mount Enabled 1
+[root@node01 ~]# hares -display infa_mount | grep Enabled
 infa_mount   Enabled               global           1
 infa_mount   ResContainerInfo      global           Type                Name            Enabled
 infa_mount   TriggersEnabled       global
-[root@pl-l1-aux-app-01 ~]# hagrp -online infa_sg -sys pl-l1-aux-app-01
-[root@pl-l1-aux-app-01 ~]# hagrp -online infa_sg -sys pl-l1-aux-app-02
-[root@pl-l1-aux-app-01 ~]# hastatus -sum
+[root@node01 ~]# hagrp -online infa_sg -sys node01
+[root@node01 ~]# hagrp -online infa_sg -sys node02
+[root@node01 ~]# hastatus -sum
 
 -- SYSTEM STATE
 -- System               State                Frozen
 
-A  pl-l1-aux-app-01     RUNNING              0
-A  pl-l1-aux-app-02     RUNNING              0
+A  node01     RUNNING              0
+A  node02     RUNNING              0
 
 -- GROUP STATE
 -- Group           System               Probed     AutoDisabled    State
 
-B  cvm             pl-l1-aux-app-01     Y          N               ONLINE
-B  cvm             pl-l1-aux-app-02     Y          N               ONLINE
-B  infa_sg         pl-l1-aux-app-01     Y          N               ONLINE
-B  infa_sg         pl-l1-aux-app-02     Y          N               ONLINE
-[root@pl-l1-aux-app-01 ~]#
+B  cvm             node01     Y          N               ONLINE
+B  cvm             node02     Y          N               ONLINE
+B  infa_sg         node01     Y          N               ONLINE
+B  infa_sg         node02     Y          N               ONLINE
+[root@node01 ~]#
 
 
 
-[root@pl-l1-aux-app-01 ~]# hastatus -sum
+[root@node01 ~]# hastatus -sum
 
 -- SYSTEM STATE
 -- System               State                Frozen
 
-A  pl-l1-aux-app-01     RUNNING              0
-A  pl-l1-aux-app-02     RUNNING              0
+A  node01     RUNNING              0
+A  node02     RUNNING              0
 
 -- GROUP STATE
 -- Group           System               Probed     AutoDisabled    State
 
-B  cvm             pl-l1-aux-app-01     Y          N               ONLINE
-B  cvm             pl-l1-aux-app-02     Y          N               ONLINE
-B  infa_sg         pl-l1-aux-app-01     Y          N               ONLINE
-B  infa_sg         pl-l1-aux-app-02     Y          N               ONLINE
-[root@pl-l1-aux-app-01 ~]# hacf -verify /etc/VRTSvcs/conf/config
-[root@pl-l1-aux-app-01 ~]# haconf -dump -makero
-[root@pl-l1-aux-app-01 ~]# df -Th
+B  cvm             node01     Y          N               ONLINE
+B  cvm             node02     Y          N               ONLINE
+B  infa_sg         node01     Y          N               ONLINE
+B  infa_sg         node02     Y          N               ONLINE
+[root@node01 ~]# hacf -verify /etc/VRTSvcs/conf/config
+[root@node01 ~]# haconf -dump -makero
+[root@node01 ~]# df -Th
 Filesystem                    Type      Size  Used Avail Use% Mounted on
 devtmpfs                      devtmpfs   16G     0   16G   0% /dev
 tmpfs                         tmpfs      16G     0   16G   0% /dev/shm
@@ -781,44 +781,44 @@ tmpfs                         tmpfs      16G     0   16G   0% /sys/fs/cgroup
 /dev/mapper/vg_01-lv_audit    ext4      997M   33M  896M   4% /var/log/audit
 tmpfs                         tmpfs     3.2G     0  3.2G   0% /run/user/0
 /dev/vx/dsk/sharedg/share_vol vxfs     1000G  797M  937G   1% /infa_shared
-[root@pl-l1-aux-app-01 ~]# ll /infa_shared/
+[root@node01 ~]# ll /infa_shared/
 total 0
 -rw-------. 1 root root  0 Jun 22 23:59 file123
 -rw-------. 1 root root  0 Jun 24 17:13 file234
 drwx------. 2 root root 96 Jun 22 23:57 lost+found
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]#
 
 
-[root@pl-l1-aux-app-02 ~]# hastatus -sum
+[root@node02 ~]# hastatus -sum
 
 -- SYSTEM STATE
 -- System               State                Frozen
 
-A  pl-l1-aux-app-01     RUNNING              0
-A  pl-l1-aux-app-02     RUNNING              0
+A  node01     RUNNING              0
+A  node02     RUNNING              0
 
 -- GROUP STATE
 -- Group           System               Probed     AutoDisabled    State
 
-B  cvm             pl-l1-aux-app-01     Y          N               ONLINE
-B  cvm             pl-l1-aux-app-02     Y          N               ONLINE
-B  infa_sg         pl-l1-aux-app-01     Y          N               ONLINE
-B  infa_sg         pl-l1-aux-app-02     Y          N               ONLINE
-[root@pl-l1-aux-app-02 ~]# touch /infa_shared/
+B  cvm             node01     Y          N               ONLINE
+B  cvm             node02     Y          N               ONLINE
+B  infa_sg         node01     Y          N               ONLINE
+B  infa_sg         node02     Y          N               ONLINE
+[root@node02 ~]# touch /infa_shared/
 file123     lost+found/
-[root@pl-l1-aux-app-02 ~]# touch /infa_shared/
+[root@node02 ~]# touch /infa_shared/
 file123     lost+found/
-[root@pl-l1-aux-app-02 ~]# touch /infa_shared/file234
-[root@pl-l1-aux-app-02 ~]# ll /infa_shared/
+[root@node02 ~]# touch /infa_shared/file234
+[root@node02 ~]# ll /infa_shared/
 total 0
 -rw-------. 1 root root  0 Jun 22 23:59 file123
 -rw-------. 1 root root  0 Jun 24 17:13 file234
 drwx------. 2 root root 96 Jun 22 23:57 lost+found
-[root@pl-l1-aux-app-02 ~]#
+[root@node02 ~]#
 
 
 
-[root@pl-l1-aux-app-01 ~]# gabconfig  -a
+[root@node01 ~]# gabconfig  -a
 GAB Port Memberships
 ===============================================================
 Port a gen   350002 membership 01
@@ -831,18 +831,18 @@ Port u gen   35000f membership 01
 Port v gen   35000a membership 01
 Port w gen   35000c membership 01
 Port y gen   350009 membership 01
-[root@pl-l1-aux-app-01 ~]# lltstat -nvv | head -10
+[root@node01 ~]# lltstat -nvv | head -10
 LLT node information:
     Node                 State    Link  Status  Address
-   * 0 pl-l1-aux-app-01  OPEN
+   * 0 node01  OPEN
                                   ens161   UP      00:50:56:AC:F7:BA
                                   ens224   UP      00:50:56:AC:6C:77
-     1 pl-l1-aux-app-02  OPEN
+     1 node02  OPEN
                                   ens161   UP      00:50:56:AC:15:C4
                                   ens224   UP      00:50:56:AC:26:92
      2                   CONNWAIT
                                   ens161   DOWN
-[root@pl-l1-aux-app-01 ~]# vxfenadm -d
+[root@node01 ~]# vxfenadm -d
 
 I/O Fencing Cluster Information:
 ================================
@@ -851,30 +851,30 @@ I/O Fencing Cluster Information:
  Fencing Mode: MAJORITY
  Cluster Members:
 
-        * 0 (pl-l1-aux-app-01)
-          1 (pl-l1-aux-app-02)
+        * 0 (node01)
+          1 (node02)
 
  RFSM State Information:
         node   0 in state  8 (running)
         node   1 in state  8 (running)
 
-[root@pl-l1-aux-app-01 ~]#
-[root@pl-l1-aux-app-01 ~]# hastatus -sum
+[root@node01 ~]#
+[root@node01 ~]# hastatus -sum
 
 -- SYSTEM STATE
 -- System               State                Frozen
 
-A  pl-l1-aux-app-01     RUNNING              0
-A  pl-l1-aux-app-02     RUNNING              0
+A  node01     RUNNING              0
+A  node02     RUNNING              0
 
 -- GROUP STATE
 -- Group           System               Probed     AutoDisabled    State
 
-B  cvm             pl-l1-aux-app-01     Y          N               ONLINE
-B  cvm             pl-l1-aux-app-02     Y          N               ONLINE
-B  infa_sg         pl-l1-aux-app-01     Y          N               ONLINE
-B  infa_sg         pl-l1-aux-app-02     Y          N               ONLINE
-[root@pl-l1-aux-app-01 ~]# df -Th
+B  cvm             node01     Y          N               ONLINE
+B  cvm             node02     Y          N               ONLINE
+B  infa_sg         node01     Y          N               ONLINE
+B  infa_sg         node02     Y          N               ONLINE
+[root@node01 ~]# df -Th
 Filesystem                    Type      Size  Used Avail Use% Mounted on
 devtmpfs                      devtmpfs   16G     0   16G   0% /dev
 tmpfs                         tmpfs      16G     0   16G   0% /dev/shm
@@ -889,58 +889,58 @@ tmpfs                         tmpfs      16G     0   16G   0% /sys/fs/cgroup
 /dev/mapper/vg_01-lv_audit    ext4      997M   34M  896M   4% /var/log/audit
 tmpfs                         tmpfs     3.2G     0  3.2G   0% /run/user/0
 /dev/vx/dsk/sharedg/share_vol vxfs     1000G  797M  937G   1% /infa_shared
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]#
 
 
 
-root@pl-l1-aux-app-01 ~]# hastatus -sum
+root@node01 ~]# hastatus -sum
 
 -- SYSTEM STATE
 -- System               State                Frozen
 
-A  pl-l1-aux-app-01     RUNNING              0
-A  pl-l1-aux-app-02     RUNNING              0
+A  node01     RUNNING              0
+A  node02     RUNNING              0
 
 -- GROUP STATE
 -- Group           System               Probed     AutoDisabled    State
 
-B  cvm             pl-l1-aux-app-01     Y          N               ONLINE
-B  cvm             pl-l1-aux-app-02     Y          N               ONLINE
-B  infa_sg         pl-l1-aux-app-01     Y          N               OFFLINE|STARTING
-B  infa_sg         pl-l1-aux-app-02     Y          N               OFFLINE|STARTING
+B  cvm             node01     Y          N               ONLINE
+B  cvm             node02     Y          N               ONLINE
+B  infa_sg         node01     Y          N               OFFLINE|STARTING
+B  infa_sg         node02     Y          N               OFFLINE|STARTING
 
 -- RESOURCES ONLINING
 -- Group           Type            Resource             System               IState
 
-F  infa_sg         CFSMount        infa_mount           pl-l1-aux-app-01     W_ONLINE
-F  infa_sg         CFSMount        infa_mount           pl-l1-aux-app-02     W_ONLINE
-[root@pl-l1-aux-app-01 ~]#
+F  infa_sg         CFSMount        infa_mount           node01     W_ONLINE
+F  infa_sg         CFSMount        infa_mount           node02     W_ONLINE
+[root@node01 ~]#
 
 
 
-[root@pl-l1-aux-app-01 ~]# hastatus -sum
+[root@node01 ~]# hastatus -sum
 
 -- SYSTEM STATE
 -- System               State                Frozen
 
-A  pl-l1-aux-app-01     RUNNING              0
-A  pl-l1-aux-app-02     RUNNING              0
+A  node01     RUNNING              0
+A  node02     RUNNING              0
 
 -- GROUP STATE
 -- Group           System               Probed     AutoDisabled    State
 
-B  cvm             pl-l1-aux-app-01     Y          N               ONLINE
-B  cvm             pl-l1-aux-app-02     Y          N               ONLINE
-B  infa_sg         pl-l1-aux-app-01     Y          N               ONLINE
-B  infa_sg         pl-l1-aux-app-02     Y          N               OFFLINE|FAULTED
+B  cvm             node01     Y          N               ONLINE
+B  cvm             node02     Y          N               ONLINE
+B  infa_sg         node01     Y          N               ONLINE
+B  infa_sg         node02     Y          N               OFFLINE|FAULTED
 
 -- RESOURCES FAILED
 -- Group           Type                 Resource             System
 
-D  infa_sg         CFSMount             infa_mount           pl-l1-aux-app-02
-[root@pl-l1-aux-app-01 ~]#
+D  infa_sg         CFSMount             infa_mount           node02
+[root@node01 ~]#
 
-[root@pl-l1-aux-app-01 ~]# df -Th
+[root@node01 ~]# df -Th
 Filesystem                    Type      Size  Used Avail Use% Mounted on
 devtmpfs                      devtmpfs   16G     0   16G   0% /dev
 tmpfs                         tmpfs      16G     0   16G   0% /dev/shm
@@ -955,55 +955,55 @@ tmpfs                         tmpfs      16G     0   16G   0% /sys/fs/cgroup
 /dev/mapper/vg_01-lv_audit    ext4      997M   34M  895M   4% /var/log/audit
 tmpfs                         tmpfs     3.2G     0  3.2G   0% /run/user/0
 /dev/vx/dsk/sharedg/share_vol vxfs     1000G  797M  937G   1% /infa_shared
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]#
 
 
-[root@pl-l1-aux-app-01 ~]# hares -display infa_mount | grep ArgListValues
-infa_mount   ArgListValues         pl-l1-aux-app-01 MountPoint  1       /infa_shared    BlockDevice     1       /dev/vx/dsk/sharedg/share_vol  MountOpt        1       cluster CloneSkip       1       no      Primary 1       pl-l1-aux-app-01        AMFMountType    1     vxfs
-infa_mount   ArgListValues         pl-l1-aux-app-02 MountPoint  1       /infa_shared    BlockDevice     1       /dev/vx/dsk/sharedg/share_vol  MountOpt        1       cluster CloneSkip       1       no      Primary 1       pl-l1-aux-app-01        AMFMountType    1     vxfs
-[root@pl-l1-aux-app-01 ~]# hagrp -clear infa_sg -sys pl-l1-aux-app-02
-[root@pl-l1-aux-app-01 ~]# hastatus -sum
-
--- SYSTEM STATE
--- System               State                Frozen
-
-A  pl-l1-aux-app-01     RUNNING              0
-A  pl-l1-aux-app-02     RUNNING              0
-
--- GROUP STATE
--- Group           System               Probed     AutoDisabled    State
-
-B  cvm             pl-l1-aux-app-01     Y          N               ONLINE
-B  cvm             pl-l1-aux-app-02     Y          N               ONLINE
-B  infa_sg         pl-l1-aux-app-01     Y          N               ONLINE
-B  infa_sg         pl-l1-aux-app-02     Y          N               OFFLINE
-[root@pl-l1-aux-app-01 ~]# hagrp -online infa_sg -sys pl-l1-aux-app-02
-[root@pl-l1-aux-app-01 ~]# hastatus -sum
+[root@node01 ~]# hares -display infa_mount | grep ArgListValues
+infa_mount   ArgListValues         node01 MountPoint  1       /infa_shared    BlockDevice     1       /dev/vx/dsk/sharedg/share_vol  MountOpt        1       cluster CloneSkip       1       no      Primary 1       node01        AMFMountType    1     vxfs
+infa_mount   ArgListValues         node02 MountPoint  1       /infa_shared    BlockDevice     1       /dev/vx/dsk/sharedg/share_vol  MountOpt        1       cluster CloneSkip       1       no      Primary 1       node01        AMFMountType    1     vxfs
+[root@node01 ~]# hagrp -clear infa_sg -sys node02
+[root@node01 ~]# hastatus -sum
 
 -- SYSTEM STATE
 -- System               State                Frozen
 
-A  pl-l1-aux-app-01     RUNNING              0
-A  pl-l1-aux-app-02     RUNNING              0
+A  node01     RUNNING              0
+A  node02     RUNNING              0
 
 -- GROUP STATE
 -- Group           System               Probed     AutoDisabled    State
 
-B  cvm             pl-l1-aux-app-01     Y          N               ONLINE
-B  cvm             pl-l1-aux-app-02     Y          N               ONLINE
-B  infa_sg         pl-l1-aux-app-01     Y          N               ONLINE
-B  infa_sg         pl-l1-aux-app-02     Y          N               ONLINE
-[root@pl-l1-aux-app-01 ~]#
+B  cvm             node01     Y          N               ONLINE
+B  cvm             node02     Y          N               ONLINE
+B  infa_sg         node01     Y          N               ONLINE
+B  infa_sg         node02     Y          N               OFFLINE
+[root@node01 ~]# hagrp -online infa_sg -sys node02
+[root@node01 ~]# hastatus -sum
+
+-- SYSTEM STATE
+-- System               State                Frozen
+
+A  node01     RUNNING              0
+A  node02     RUNNING              0
+
+-- GROUP STATE
+-- Group           System               Probed     AutoDisabled    State
+
+B  cvm             node01     Y          N               ONLINE
+B  cvm             node02     Y          N               ONLINE
+B  infa_sg         node01     Y          N               ONLINE
+B  infa_sg         node02     Y          N               ONLINE
+[root@node01 ~]#
 
 
-[root@pl-l1-aux-app-01 ~]# hacf -verify /etc/VRTSvcs/conf/config
-[root@pl-l1-aux-app-01 ~]# haconf -dump -makero
+[root@node01 ~]# hacf -verify /etc/VRTSvcs/conf/config
+[root@node01 ~]# haconf -dump -makero
 VCS WARNING V-16-1-10369 Cluster not writable.
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]#
 
 
 
-[root@pl-l1-aux-app-01 ~]# df -Th
+[root@node01 ~]# df -Th
 Filesystem                    Type      Size  Used Avail Use% Mounted on
 devtmpfs                      devtmpfs   16G     0   16G   0% /dev
 tmpfs                         tmpfs      16G     0   16G   0% /dev/shm
@@ -1018,16 +1018,16 @@ tmpfs                         tmpfs      16G     0   16G   0% /sys/fs/cgroup
 /dev/mapper/vg_01-lv_audit    ext4      997M   36M  894M   4% /var/log/audit
 tmpfs                         tmpfs     3.2G     0  3.2G   0% /run/user/0
 /dev/vx/dsk/sharedg/share_vol vxfs     1000G  797M  937G   1% /infa_shared
-[root@pl-l1-aux-app-01 ~]# mount  | grep /infa_shared
+[root@node01 ~]# mount  | grep /infa_shared
 /dev/vx/dsk/sharedg/share_vol on /infa_shared type vxfs (rw,seclabel,mntlock=VCS,cluster,crw,delaylog,largefiles,ioerror=mdisable)
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]#
 
 
-[root@pl-l1-aux-app-01 ~]# vxdisk -o alldgs list
+[root@node01 ~]# vxdisk -o alldgs list
 DEVICE          TYPE            DISK         GROUP        STATUS
 pl-l1-aux-app-0_vmdk0_3 auto:cdsdisk    pl-l1-aux-app-0_vmdk0_3  sharedg      online shared
 sda          auto:LVM        -            -            LVM
-[root@pl-l1-aux-app-01 ~]# vxprint -ht
+[root@node01 ~]# vxprint -ht
 Disk group: sharedg
 
 DG NAME         NCONFIG      NLOG     MINORS   GROUP-ID
@@ -1047,14 +1047,14 @@ SP NAME         SNAPVOL      DCO
 EX NAME         ASSOC        VC                       PERMS    MODE     STATE
 SR NAME         KSTATE
 
-dg sharedg      default      default  37000    1750661268.10.pl-l1-aux-app-01.lab.uprising.t-mobile.com
+dg sharedg      default      default  37000    1750661268.10.node01.lab.uprising.t-mobile.com
 
 dm pl-l1-aux-app-0_vmdk0_3 pl-l1-aux-app-0_vmdk0_3 auto 65536 2147417808 -
 
 v  share_vol    -            ENABLED  ACTIVE   2097152000 SELECT  -        fsgen
 pl share_vol-01 share_vol    ENABLED  ACTIVE   2097152000 CONCAT  -        RW
 sd pl-l1-aux-app-0_vmdk0_3-01 share_vol-01 pl-l1-aux-app-0_vmdk0_3 0 2097152000 0 pl-l1-aux-app-0_vmdk0_3 ENA
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]#
 
 
 
@@ -1128,7 +1128,7 @@ echo "✅ Configuration completed successfully."
 
 
 
-[root@pl-l1-aux-app-01 ~]# cat vcs_health_check.sh
+[root@node01 ~]# cat vcs_health_check.sh
 #!/bin/bash
 
 # -----------------------------------------------------------------------------
@@ -1200,7 +1200,7 @@ hares -state | egrep "OFFLINE|FAULTED"
 echo "===================="
 echo "✅ Cluster health check completed."
 
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]#
 
 
 
@@ -1380,12 +1380,12 @@ https://sort.veritas.com/DocPortal/pdf/109508799-141543583-1
 https://sort.veritas.com/DocPortal/pdf/81080974-141543550-1
 
 
-[root@pl-l1-aux-app-02 ~]# export PATH=$PATH:/opt/VRTS/bin
-[root@pl-l1-aux-app-02 ~]# hastatus -sum
+[root@node02 ~]# export PATH=$PATH:/opt/VRTS/bin
+[root@node02 ~]# hastatus -sum
 
 
-https://pl-l1-aux-app-01-traf.lab.uprising.t-mobile.com:5634/vcs/admin/application_health.html
-https://pl-l1-aux-app-01-traf.lab.uprising.t-mobile.com:5634/
+https://node01-traf.lab.uprising.t-mobile.com:5634/vcs/admin/application_health.html
+https://node01-traf.lab.uprising.t-mobile.com:5634/
 
 
 CRQ000000037626  || Q2 2024 OS Patching & Veritas upgrade on Prod AWS US-EAST BSCS Veritas Servers[7] (Passive site)
@@ -1420,18 +1420,18 @@ Patch:
    https://www.veritas.com/content/support/en_US/downloads/detail.REL319342#item2 
            https://www.veritas.com/support/en_US/downloads/detail.REL319342#item2
 
-[root@pl-l1-aux-app-01 rhel8_x86_64]# pwd
+[root@node01 rhel8_x86_64]# pwd
 /root/vcs_files/dvd1-redhatlinux/rhel8_x86_64
-[root@pl-l1-aux-app-01 rhel8_x86_64]# ./installer -precheck
+[root@node01 rhel8_x86_64]# ./installer -precheck
 
-pl-l1-aux-app-01 pl-l1-aux-app-02
+node01 node02
 
 
 2. InfoScale 7.4.2 Update 8 Cumulative Patch on RHEL8 Platform (7.4.2.5600)
    https://www.veritas.com/content/support/en_US/downloads/update.UPD612114  
 
 /root/vcs_files/installVRTSinfoscale-Patch
-./installVRTSinfoscale742P5600 -require /root/vcs_files/cpipatch/patches/CPI_7.4.2_P40.pl pl-l1-aux-app-01 pl-l1-aux-app-02
+./installVRTSinfoscale742P5600 -require /root/vcs_files/cpipatch/patches/CPI_7.4.2_P40.pl node01 node02
 
 
 3. cpi-Patch-7.4.2.4000 
@@ -1439,8 +1439,8 @@ pl-l1-aux-app-01 pl-l1-aux-app-02
 
 
 Server	NMNet	COSNet
-pl-l1-aux-app-01	10.253.10.131	10.5.101.53
-pl-l1-aux-app-02	10.253.10.132	10.5.101.54
+node01	10.253.10.131	10.5.101.53
+node02	10.253.10.132	10.5.101.54
 pl-l1-aux-nfs-01	10.253.10.133	10.5.101.55
 pl-l1-aux-nfs-02	10.253.10.134	10.5.101.56
 
@@ -1448,7 +1448,7 @@ pl-l1-aux-nfs-02	10.253.10.134	10.5.101.56
 192.168.47.0/24
 
 
-[root@pl-l1-aux-app-02 ~]# ip a
+[root@node02 ~]# ip a
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
     inet 127.0.0.1/8 scope host lo
@@ -1476,10 +1476,10 @@ pl-l1-aux-nfs-02	10.253.10.134	10.5.101.56
        valid_lft forever preferred_lft forever
     inet6 fe80::bae:f524:985e:2b1d/64 scope link noprefixroute
        valid_lft forever preferred_lft forever
-[root@pl-l1-aux-app-02 ~]#
+[root@node02 ~]#
 
 
-                                                   pl-l1-aux-app-01 pl-l1-aux-app-02
+                                                   node01 node02
 
      1)  Configure the heartbeat links using LLT over Ethernet
      2)  Configure the heartbeat links using LLT over UDP
@@ -1490,13 +1490,13 @@ pl-l1-aux-nfs-02	10.253.10.134	10.5.101.56
 
 How would you like to configure heartbeat links? [1-5,b,q,?] (5) 1
 
-    Discovering NICs on pl-l1-aux-app-01 ......................................................... Discovered ens161 ens192 ens224
+    Discovering NICs on node01 ......................................................... Discovered ens161 ens192 ens224
 
-Enter the NIC for the first private heartbeat link on pl-l1-aux-app-01: [b,q,?] (ens161)
+Enter the NIC for the first private heartbeat link on node01: [b,q,?] (ens161)
 
 Would you like to configure a second private heartbeat link? [y,n,q,b,?] (n)
 
-Enter the NIC for the low-priority heartbeat link on pl-l1-aux-app-01: [b,q,?] (ens224)
+Enter the NIC for the low-priority heartbeat link on node01: [b,q,?] (ens224)
 
 
 
@@ -1508,7 +1508,7 @@ total 1048512
 
 
  Veritas InfoScale Enterprise 7.4.2 Install Program
-                                                   pl-l1-aux-app-01 pl-l1-aux-app-02
+                                                   node01 node02
 Veritas:
 
 /opt/VRTS/install/showversion
@@ -1811,7 +1811,7 @@ total 2795936
 -rw-r-----. 1 root root 1634510709 Jun 20 02:48 Veritas_InfoScale_7.4.2_RHEL.tar.gz
 [root@npe-esa-pfa-w2a-rp1 infoscale_7.4.2_base]#
 
-[root@pl-l1-aux-app-01 ~]# cd /root/vcs_files/
+[root@node01 ~]# cd /root/vcs_files/
 
 
 scp -p npe-esa-pfa-w2a-rp1:/repos/infoscale_7.4.2_base/Veritas_InfoScale_7.4.2_RHEL.tar.gz .
@@ -1866,7 +1866,7 @@ free -h
   210  20/06/25 03:13:16 df -Th
   211  20/06/25 03:13:17 vgs
   212  20/06/25 03:13:42 history
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]#
 
 
 lvextend -r -L 15G -n /dev/mapper/vg_01-LogVol02
@@ -1880,8 +1880,8 @@ scp -p npe-esa-pfa-w2a-rp1:/repos/infoscale_7.4.2_base/Veritas_InfoScale_7.4.2_R
 
 Veritas InfoScale Enterprise Install did not complete successfully
 
-VRTSvxvm rpm failed to install on pl-l1-aux-app-01
-VRTSvxvm rpm failed to install on pl-l1-aux-app-02
+VRTSvxvm rpm failed to install on node01
+VRTSvxvm rpm failed to install on node02
 
 rpms/patches failed to install. Do you want to exit installer? [y,n,q] (y)
 
@@ -1894,7 +1894,7 @@ installer log files, summary file, and response file are saved at:
 
 Would you like to view the summary file? [y,n,q] (n)
 
-[root@pl-l1-aux-app-01 rhel8_x86_64]# cat /opt/VRTS/install/logs/installer-202506200348VyM/install.VRTSvxvm.pl-l1-aux-app-01
+[root@node01 rhel8_x86_64]# cat /opt/VRTS/install/logs/installer-202506200348VyM/install.VRTSvxvm.node01
 Verifying packages...
 Preparing packages...
 VRTSvxvm-7.4.2.0000-RHEL8.x86_64
@@ -1903,7 +1903,7 @@ creating VxVM device nodes under /dev
 ERROR: No appropriate modules found. Error in loading module "vxdmp". See documentation.
 warning: %post(VRTSvxvm-7.4.2.0000-RHEL8.x86_64) scriptlet failed, exit status 1
 
-[root@pl-l1-aux-app-01 rhel8_x86_64]# cat /opt/VRTS/install/logs/installer-202506200348VyM/install.VRTSvxvm.pl-l1-aux-app-02
+[root@node01 rhel8_x86_64]# cat /opt/VRTS/install/logs/installer-202506200348VyM/install.VRTSvxvm.node02
 warning: /opt/VRTStmp/installer-202506200348VyM/VRTSvxvm-7.4.2.0000-RHEL8.x86_64.rpm: Header V4 RSA/SHA1 Signature, key ID cc633953: NOKEY
 Verifying packages...
 Preparing packages...
@@ -1912,21 +1912,21 @@ Installing and Enabling VxVM systemd-services
 creating VxVM device nodes under /dev
 ERROR: No appropriate modules found. Error in loading module "vxdmp". See documentation.
 warning: %post(VRTSvxvm-7.4.2.0000-RHEL8.x86_64) scriptlet failed, exit status 1
-[root@pl-l1-aux-app-01 rhel8_x86_64]#
+[root@node01 rhel8_x86_64]#
 
-[root@pl-l1-aux-app-01 rhel8_x86_64]# cat /opt/VRTS/install/logs/installer-202506200348VyM/installer-202506200348VyM.summary
+[root@node01 rhel8_x86_64]# cat /opt/VRTS/install/logs/installer-202506200348VyM/installer-202506200348VyM.summary
 installer Summary
 
 System verification checks completed
 
 The following notes were discovered on the systems:
-CPI NOTE V-9-30-1021 The system information on pl-l1-aux-app-01:
+CPI NOTE V-9-30-1021 The system information on node01:
         Operating system: Linux RHEL 8.10 x86_64
         CPU number: 12
         CPU speed: 2596 MHz
         Memory size: 31857 MB
         Swap size: 13311 MB
-CPI NOTE V-9-30-1021 The system information on pl-l1-aux-app-02:
+CPI NOTE V-9-30-1021 The system information on node02:
         Operating system: Linux RHEL 8.10 x86_64
         CPU number: 12
         CPU speed: 2297 MHz
@@ -1934,22 +1934,22 @@ CPI NOTE V-9-30-1021 The system information on pl-l1-aux-app-02:
         Swap size: 13311 MB
 
 The following warnings were discovered on the systems:
-CPI WARNING V-9-40-1418 Kernel Release 4.18.0-553.50.1.el8_10.x86_64 is detected on pl-l1-aux-app-01, which is not recognizable by the installer. It is strongly recommended to check it on SORT (https://sort.veritas.com) before continue.
-CPI WARNING V-9-40-1418 Kernel Release 4.18.0-553.50.1.el8_10.x86_64 is detected on pl-l1-aux-app-02, which is not recognizable by the installer. It is strongly recommended to check it on SORT (https://sort.veritas.com) before continue.
+CPI WARNING V-9-40-1418 Kernel Release 4.18.0-553.50.1.el8_10.x86_64 is detected on node01, which is not recognizable by the installer. It is strongly recommended to check it on SORT (https://sort.veritas.com) before continue.
+CPI WARNING V-9-40-1418 Kernel Release 4.18.0-553.50.1.el8_10.x86_64 is detected on node02, which is not recognizable by the installer. It is strongly recommended to check it on SORT (https://sort.veritas.com) before continue.
 
 The following checks and actions were performed on the systems:
-CPI CHECK V-9-20-1139 System time on pl-l1-aux-app-01 is '02:50:10:20:06:2025'
-CPI CHECK V-9-20-1139 System time on pl-l1-aux-app-02 is '02:50:10:20:06:2025'
+CPI CHECK V-9-20-1139 System time on node01 is '02:50:10:20:06:2025'
+CPI CHECK V-9-20-1139 System time on node02 is '02:50:10:20:06:2025'
 
 Veritas InfoScale Enterprise Install did not complete successfully
-VRTSvxvm rpm failed to install on pl-l1-aux-app-01
-VRTSvxvm rpm failed to install on pl-l1-aux-app-02
+VRTSvxvm rpm failed to install on node01
+VRTSvxvm rpm failed to install on node02
 
 The All package set was selected for installation
 
 
 
-The following rpms were installed on pl-l1-aux-app-01:
+The following rpms were installed on node01:
 
         VRTSperl
         VRTSpython
@@ -1979,7 +1979,7 @@ The following rpms were installed on pl-l1-aux-app-01:
         VRTSvcswiz
 
 
-The following rpms failed to install on pl-l1-aux-app-01:
+The following rpms failed to install on node01:
 
         VRTSvxvm
 
@@ -1988,7 +1988,7 @@ The All package set was selected for installation
 
 
 
-The following rpms were installed on pl-l1-aux-app-02:
+The following rpms were installed on node02:
 
         VRTSperl
         VRTSpython
@@ -2018,12 +2018,12 @@ The following rpms were installed on pl-l1-aux-app-02:
         VRTSvcswiz
 
 
-The following rpms failed to install on pl-l1-aux-app-02:
+The following rpms failed to install on node02:
 
         VRTSvxvm
 
 
-[root@pl-l1-aux-app-01 rhel8_x86_64]#
+[root@node01 rhel8_x86_64]#
 
 
 
@@ -2059,7 +2059,7 @@ VRTSglm-7.4.2.4800-RHEL8.x86_64
 [root@pl-p1-aux-05 ~]#
 
 
-[root@pl-l1-aux-app-01 rhel8_x86_64]# cat docs/readme.txt
+[root@node01 rhel8_x86_64]# cat docs/readme.txt
 
 Veritas InfoScale™ 7.4.2 Readme
 =============================
@@ -2157,13 +2157,13 @@ restarting the installer will detect the previous installation. The
 installer prompts to resume the installation. If you choose to resume the
 installation, the installer proceeds from the point where the
 installation aborted. If you choose not to resume, the installation
-starts from the beginning.[root@pl-l1-aux-app-01 rhel8_x86_64]#
+starts from the beginning.[root@node01 rhel8_x86_64]#
 
 /root/vcs_files/dvd1-redhatlinux/rhel8_x86_64
 
 
                                           Veritas InfoScale Enterprise 7.4.2 Install Program
-                                                   pl-l1-aux-app-01 pl-l1-aux-app-02
+                                                   node01 node02
 
 Logs are being written to /opt/VRTStmp/installer-202506201112JWB while installer is in progress
 
@@ -2184,14 +2184,14 @@ System verification checks completed
 
 The following warnings were discovered on the systems:
 
-CPI WARNING V-9-30-1148 InfoScale Enterprise version 7.4.2.0000 is already installed on pl-l1-aux-app-01
+CPI WARNING V-9-30-1148 InfoScale Enterprise version 7.4.2.0000 is already installed on node01
 
-CPI WARNING V-9-40-1418 Kernel Release 4.18.0-553.50.1.el8_10.x86_64 is detected on pl-l1-aux-app-01, which is not recognizable by the
+CPI WARNING V-9-40-1418 Kernel Release 4.18.0-553.50.1.el8_10.x86_64 is detected on node01, which is not recognizable by the
 installer. It is strongly recommended to check it on SORT (https://sort.veritas.com) before continue.
 
-CPI WARNING V-9-30-1148 InfoScale Enterprise version 7.4.2.0000 is already installed on pl-l1-aux-app-02
+CPI WARNING V-9-30-1148 InfoScale Enterprise version 7.4.2.0000 is already installed on node02
 
-CPI WARNING V-9-40-1418 Kernel Release 4.18.0-553.50.1.el8_10.x86_64 is detected on pl-l1-aux-app-02, which is not recognizable by the
+CPI WARNING V-9-40-1418 Kernel Release 4.18.0-553.50.1.el8_10.x86_64 is detected on node02, which is not recognizable by the
 installer. It is strongly recommended to check it on SORT (https://sort.veritas.com) before continue.
 
 Do you want to continue? [y,n,q] (y)
@@ -2232,7 +2232,7 @@ installer log files, summary file, and response file are saved at:
         /opt/VRTS/install/logs/installer-202506201112JWB
 
 Would you like to view the summary file? [y,n,q] (n)
-[root@pl-l1-aux-app-01 rhel8_x86_64]#
+[root@node01 rhel8_x86_64]#
 
 
 https://www.veritas.com/support/en_US/downloads/detail.REL319342#item2
@@ -2377,19 +2377,19 @@ o	Trigger below cmd for doing autosync.
 
 
 
-[root@pl-l1-aux-app-01 vcs_files]# history
+[root@node01 vcs_files]# history
     1  17/06/25 14:44:49 uname -r
     2  17/06/25 14:45:05 yum --disablerepo='*' --enablerepo "rhel-8-appstream" --enablerepo "rhel-8-baseos" --exclude="*openjdk*" install ipa-client -y
     3  17/06/25 14:49:51 wget http://10.158.108.81/install/scripts/postbuild_pllab.sh && chmod 700 postbuild_pllab.sh
     4  17/06/25 14:49:59 ls -lrth
-    5  17/06/25 14:50:07 ./postbuild_pllab.sh pl-l1-aux-app-01
+    5  17/06/25 14:50:07 ./postbuild_pllab.sh node01
     6  17/06/25 14:57:20 systemctl status sssd
     7  17/06/25 14:57:24 ifconfig -a
     8  17/06/25 15:25:45 exit
     9  17/06/25 15:27:37 id -a edpyxx01@lab
    10  17/06/25 15:27:40 exit
-   11  17/06/25 15:40:14 host pl-l1-aux-app-01
-   12  17/06/25 15:40:21 host pl-l1-aux-app-01-traf
+   11  17/06/25 15:40:14 host node01
+   12  17/06/25 15:40:21 host node01-traf
    13  17/06/25 15:40:29 ifconfig -a
    14  17/06/25 17:55:16 cd /root
    15  17/06/25 17:55:18 ls -lrth
@@ -2553,8 +2553,8 @@ o	Trigger below cmd for doing autosync.
   173  19/06/25 06:18:21 passwd auxemmsftp
   174  19/06/25 06:18:50 passwd auxadm
   175  20/06/25 03:35:13 ssh-keygen
-  176  20/06/25 03:35:40 ssh-copy-id pl-l1-aux-app-02
-  177  20/06/25 03:35:51 ssh pl-l1-aux-app-02
+  176  20/06/25 03:35:40 ssh-copy-id node02
+  177  20/06/25 03:35:51 ssh node02
   178  20/06/25 03:52:47 ip a
   179  20/06/25 03:59:34 df -Th
   180  20/06/25 03:59:35 lsblk
@@ -2623,8 +2623,8 @@ o	Trigger below cmd for doing autosync.
   243  20/06/25 03:19:00 ./installer -precheck
   244  20/06/25 04:05:59 ll /opt/VRTS/install/logs
   245  20/06/25 04:06:36 ls -lrta /opt/VRTS/install/logs/installer-202506200348VyM/
-  246  20/06/25 04:07:02 cat /opt/VRTS/install/logs/installer-202506200348VyM/install.VRTSvxvm.pl-l1-aux-app-01
-  247  20/06/25 04:07:37 cat /opt/VRTS/install/logs/installer-202506200348VyM/install.VRTSvxvm.pl-l1-aux-app-02
+  246  20/06/25 04:07:02 cat /opt/VRTS/install/logs/installer-202506200348VyM/install.VRTSvxvm.node01
+  247  20/06/25 04:07:37 cat /opt/VRTS/install/logs/installer-202506200348VyM/install.VRTSvxvm.node02
   248  20/06/25 04:14:49 cat /opt/VRTS/install/logs/installer-202506200348VyM/installer-202506200348VyM.summary
   249  20/06/25 05:26:50 host 10.159.176.215
   250  20/06/25 06:16:36 /opt/VRTSvcs/bin/hastatus -sum
@@ -2668,9 +2668,9 @@ o	Trigger below cmd for doing autosync.
   288  20/06/25 17:52:55 ll
   289  20/06/25 17:53:01 cat README
   290  20/06/25 17:54:12 ll
-  291  20/06/25 17:54:57 #./installVRTSinfoscale742P5600 pl-l1-aux-app-01 pl-l1-aux-app-02
+  291  20/06/25 17:54:57 #./installVRTSinfoscale742P5600 node01 node02
   292  20/06/25 17:55:03 cat cpipatch/README
-  293  20/06/25 17:55:27 ./installVRTSinfoscale742P5600 pl-l1-aux-app-01 pl-l1-aux-app-02
+  293  20/06/25 17:55:27 ./installVRTSinfoscale742P5600 node01 node02
   294  20/06/25 18:29:53 rpm -qa | grep -i vrts
   295  20/06/25 18:30:03 cd cpipatch/
   296  20/06/25 18:30:04 ll
@@ -2713,7 +2713,7 @@ o	Trigger below cmd for doing autosync.
   333  20/06/25 18:57:11 mv installVRTSinfoscale742P5600 README rpms scripts installVRTSinfoscale-Patch/
   334  20/06/25 18:57:13 ll
   335  20/06/25 18:57:41 history
-[root@pl-l1-aux-app-01 vcs_files]#
+[root@node01 vcs_files]#
 
 
 
@@ -2732,11 +2732,11 @@ installer log files and summary file are saved at:
 
 Would you like to view the summary file? [y,n,q] (n)
 
-[root@pl-l1-aux-app-01 installVRTSinfoscale-Patch]#
-[root@pl-l1-aux-app-01 installVRTSinfoscale-Patch]#
-[root@pl-l1-aux-app-01 installVRTSinfoscale-Patch]# 
+[root@node01 installVRTSinfoscale-Patch]#
+[root@node01 installVRTSinfoscale-Patch]#
+[root@node01 installVRTSinfoscale-Patch]# 
 
-[root@pl-l1-aux-app-01 installVRTSinfoscale-Patch]# cat /opt/VRTS/install/logs/installer-202506202143vcU/installer-202506202143vcU.summary
+[root@node01 installVRTSinfoscale-Patch]# cat /opt/VRTS/install/logs/installer-202506202143vcU/installer-202506202143vcU.summary
 
  
 Example: Stop Entire Cluster from One Node
@@ -2750,54 +2750,54 @@ lltconfig -U
 systemctl stop vxfen
 
 
-[root@pl-l1-aux-app-01 installVRTSinfoscale-Patch]# /opt/VRTSvcs/bin/hastatus -sum
+[root@node01 installVRTSinfoscale-Patch]# /opt/VRTSvcs/bin/hastatus -sum
 VCS ERROR V-16-1-10600 Cannot connect to VCS engine
 VCS WARNING V-16-1-11046 Local system not available
-[root@pl-l1-aux-app-01 installVRTSinfoscale-Patch]# gabconfig -U
+[root@node01 installVRTSinfoscale-Patch]# gabconfig -U
 GAB gabconfig ERROR V-15-2-25014 clients still registered
-[root@pl-l1-aux-app-01 installVRTSinfoscale-Patch]# lltconfig -U
+[root@node01 installVRTSinfoscale-Patch]# lltconfig -U
 lltconfig: this will attempt to stop and reset LLT. Confirm (y/n)? y
 lltconfig: this will attempt to stop and reset LLT. Confirm (y/n)? y
 LLT lltconfig ERROR V-14-2-15121 LLT unconfigure aborted, unregister 4 port(s)
-[root@pl-l1-aux-app-01 installVRTSinfoscale-Patch]#
+[root@node01 installVRTSinfoscale-Patch]#
 
 
-[root@pl-l1-aux-app-02 ~]# /opt/VRTSvcs/bin/hastatus -sum
+[root@node02 ~]# /opt/VRTSvcs/bin/hastatus -sum
 VCS ERROR V-16-1-10600 Cannot connect to VCS engine
 VCS WARNING V-16-1-11046 Local system not available
-[root@pl-l1-aux-app-02 ~]# gabconfig -U
+[root@node02 ~]# gabconfig -U
 GAB gabconfig ERROR V-15-2-25014 clients still registered
-[root@pl-l1-aux-app-02 ~]# lltconfig -U
+[root@node02 ~]# lltconfig -U
 lltconfig: this will attempt to stop and reset LLT. Confirm (y/n)?
 lltconfig: this will attempt to stop and reset LLT. Confirm (y/n)?
 lltconfig: this will attempt to stop and reset LLT. Confirm (y/n)? y
 LLT lltconfig ERROR V-14-2-15121 LLT unconfigure aborted, unregister 4 port(s)
-[root@pl-l1-aux-app-02 ~]#
+[root@node02 ~]#
 
 
 
 /opt/VRTSvcs/bin/hastop -all
 
-[root@pl-l1-aux-app-02 ~]# /opt/VRTSvcs/bin/hastatus -sum
+[root@node02 ~]# /opt/VRTSvcs/bin/hastatus -sum
 
 -- SYSTEM STATE
 -- System               State                Frozen
 
-A  pl-l1-aux-app-01     RUNNING              0
-A  pl-l1-aux-app-02     RUNNING              0
+A  node01     RUNNING              0
+A  node02     RUNNING              0
 
 -- GROUP STATE
 -- Group           System               Probed     AutoDisabled    State
 
-B  cvm             pl-l1-aux-app-01     Y          N               ONLINE
-B  cvm             pl-l1-aux-app-02     Y          N               ONLINE
-[root@pl-l1-aux-app-02 ~]#
+B  cvm             node01     Y          N               ONLINE
+B  cvm             node02     Y          N               ONLINE
+[root@node02 ~]#
 
 
-[root@pl-l1-aux-app-02 ~]# vxdctl -c mode
+[root@node02 ~]# vxdctl -c mode
 mode: enabled: cluster active - SLAVE
-master: pl-l1-aux-app-01
-[root@pl-l1-aux-app-02 ~]#
+master: node01
+[root@node02 ~]#
 
 
 [root@pl-p1-aux-05 ~]# /opt/VRTSvcs/bin/hastatus -sum
@@ -3418,7 +3418,7 @@ LLT node information:
 
 
                                          Veritas InfoScale Enterprise 7.4.2 Configure Program
-                                                   pl-l1-aux-app-01 pl-l1-aux-app-02
+                                                   node01 node02
 
 Fencing configuration
      1)  Configure Coordination Point client based fencing
@@ -3440,39 +3440,39 @@ group and unmount the mounted file systems in the cluster.
 
 HAD and all the applications will be stopped. Do you want to stop VCS and all its applications and apply fencing configuration on all
 nodes at this point? [y,n,q] (y)
-    Stopping VCS on pl-l1-aux-app-02 ........................................................................................ Done
-    Stopping vxglm on pl-l1-aux-app-02 ...................................................................................... Done
-    Stopping vxodm on pl-l1-aux-app-02 ...................................................................................... Done
-    Stopping vxgms on pl-l1-aux-app-02 ...................................................................................... Done
-    Stopping vxfen on pl-l1-aux-app-02 ...................................................................................... Done
-    Stopping gab on pl-l1-aux-app-02 ........................................................................................ Done
-    Stopping VCS on pl-l1-aux-app-01 ........................................................................................ Done
-    Stopping vxglm on pl-l1-aux-app-01 ...................................................................................... Done
-    Stopping vxodm on pl-l1-aux-app-01 ...................................................................................... Done
-    Stopping vxgms on pl-l1-aux-app-01 ...................................................................................... Done
-    Stopping vxfen on pl-l1-aux-app-01 ...................................................................................... Done
-    Stopping gab on pl-l1-aux-app-01 ........................................................................................ Done
-    Updating /etc/vxfenmode file on pl-l1-aux-app-01 ........................................................................ Done
-    Updating /etc/vxenviron file on pl-l1-aux-app-01 ........................................................................ Done
-    Updating /etc/sysconfig/vxfen file on pl-l1-aux-app-01 .................................................................. Done
-    Updating /etc/llttab file on pl-l1-aux-app-01 ........................................................................... Done
-    Updating /etc/vxfenmode file on pl-l1-aux-app-02 ........................................................................ Done
-    Updating /etc/vxenviron file on pl-l1-aux-app-02 ........................................................................ Done
-    Updating /etc/sysconfig/vxfen file on pl-l1-aux-app-02 .................................................................. Done
-    Updating /etc/llttab file on pl-l1-aux-app-02 ........................................................................... Done
-    Starting gab on pl-l1-aux-app-01 ........................................................................................ Done
-    Starting gab on pl-l1-aux-app-02 ........................................................................................ Done
-    Starting vxfen on pl-l1-aux-app-01 ...................................................................................... Done
-    Starting vxfen on pl-l1-aux-app-02 ...................................................................................... Done
-    Starting vxgms on pl-l1-aux-app-01 ...................................................................................... Done
-    Starting vxgms on pl-l1-aux-app-02 ...................................................................................... Done
-    Starting vxodm on pl-l1-aux-app-01 ...................................................................................... Done
-    Starting vxodm on pl-l1-aux-app-02 ...................................................................................... Done
-    Starting vxglm on pl-l1-aux-app-01 ...................................................................................... Done
-    Starting vxglm on pl-l1-aux-app-02 ...................................................................................... Done
+    Stopping VCS on node02 ........................................................................................ Done
+    Stopping vxglm on node02 ...................................................................................... Done
+    Stopping vxodm on node02 ...................................................................................... Done
+    Stopping vxgms on node02 ...................................................................................... Done
+    Stopping vxfen on node02 ...................................................................................... Done
+    Stopping gab on node02 ........................................................................................ Done
+    Stopping VCS on node01 ........................................................................................ Done
+    Stopping vxglm on node01 ...................................................................................... Done
+    Stopping vxodm on node01 ...................................................................................... Done
+    Stopping vxgms on node01 ...................................................................................... Done
+    Stopping vxfen on node01 ...................................................................................... Done
+    Stopping gab on node01 ........................................................................................ Done
+    Updating /etc/vxfenmode file on node01 ........................................................................ Done
+    Updating /etc/vxenviron file on node01 ........................................................................ Done
+    Updating /etc/sysconfig/vxfen file on node01 .................................................................. Done
+    Updating /etc/llttab file on node01 ........................................................................... Done
+    Updating /etc/vxfenmode file on node02 ........................................................................ Done
+    Updating /etc/vxenviron file on node02 ........................................................................ Done
+    Updating /etc/sysconfig/vxfen file on node02 .................................................................. Done
+    Updating /etc/llttab file on node02 ........................................................................... Done
+    Starting gab on node01 ........................................................................................ Done
+    Starting gab on node02 ........................................................................................ Done
+    Starting vxfen on node01 ...................................................................................... Done
+    Starting vxfen on node02 ...................................................................................... Done
+    Starting vxgms on node01 ...................................................................................... Done
+    Starting vxgms on node02 ...................................................................................... Done
+    Starting vxodm on node01 ...................................................................................... Done
+    Starting vxodm on node02 ...................................................................................... Done
+    Starting vxglm on node01 ...................................................................................... Done
+    Starting vxglm on node02 ...................................................................................... Done
     Updating main.cf with fencing ........................................................................................... Done
-    Starting VCS on pl-l1-aux-app-01 ........................................................................................ Done
-    Starting VCS on pl-l1-aux-app-02 ........................................................................................ Done
+    Starting VCS on node01 ........................................................................................ Done
+    Starting VCS on node02 ........................................................................................ Done
     I/O Fencing configuration ............................................................................................... Done
 
 I/O Fencing configuration completed successfully
@@ -3489,20 +3489,20 @@ https://<VM_IP_or_Hostname>:5634/vcs/admin/application_health.html
 
 
 
-[root@pl-l1-aux-app-02 ~]# /opt/VRTSvcs/bin/hastatus -sum
+[root@node02 ~]# /opt/VRTSvcs/bin/hastatus -sum
 
 -- SYSTEM STATE
 -- System               State                Frozen
 
-A  pl-l1-aux-app-01     RUNNING              0
-A  pl-l1-aux-app-02     RUNNING              0
+A  node01     RUNNING              0
+A  node02     RUNNING              0
 
 -- GROUP STATE
 -- Group           System               Probed     AutoDisabled    State
 
-B  cvm             pl-l1-aux-app-01     Y          N               ONLINE
-B  cvm             pl-l1-aux-app-02     Y          N               ONLINE
-[root@pl-l1-aux-app-02 ~]# vxfenadm -d
+B  cvm             node01     Y          N               ONLINE
+B  cvm             node02     Y          N               ONLINE
+[root@node02 ~]# vxfenadm -d
 
 I/O Fencing Cluster Information:
 ================================
@@ -3511,14 +3511,14 @@ I/O Fencing Cluster Information:
  Fencing Mode: MAJORITY
  Cluster Members:
 
-          0 (pl-l1-aux-app-01)
-        * 1 (pl-l1-aux-app-02)
+          0 (node01)
+        * 1 (node02)
 
  RFSM State Information:
         node   0 in state  8 (running)
         node   1 in state  8 (running)
 
-[root@pl-l1-aux-app-02 ~]# gabconfig -a
+[root@node02 ~]# gabconfig -a
 GAB Port Memberships
 ===============================================================
 Port a gen   2f0101 membership 01
@@ -3541,37 +3541,37 @@ Port w gen   2f0110 membership 01
 Port w gen   2f0110   jeopardy ;1
 Port y gen   2f010d membership 01
 Port y gen   2f010d   jeopardy ;1
-[root@pl-l1-aux-app-02 ~]# cat /etc/llttab
-set-node pl-l1-aux-app-02
+[root@node02 ~]# cat /etc/llttab
+set-node node02
 set-cluster 35461
 set-timer sendhbcap:1800
 link ens161 eth-00:50:56:ac:15:c4 - ether - -
 link-lowpri ens224 eth-00:50:56:ac:26:92 - ether - -
-[root@pl-l1-aux-app-02 ~]# vxdctl -c mode
+[root@node02 ~]# vxdctl -c mode
 mode: enabled: cluster active - SLAVE
-master: pl-l1-aux-app-01
-[root@pl-l1-aux-app-02 ~]#
+master: node01
+[root@node02 ~]#
 
 
 
-[root@pl-l1-aux-app-01 ~]# lltstat -nvv
+[root@node01 ~]# lltstat -nvv
 LLT node information:
     Node                 State    Link  Status  Address
-   * 0 pl-l1-aux-app-01  OPEN
+   * 0 node01  OPEN
                                   ens161   UP      00:50:56:AC:F7:BA
                                   ens224   UP      00:50:56:AC:6C:77
-     1 pl-l1-aux-app-02  OPEN
+     1 node02  OPEN
                                   ens161   DOWN
                                   ens224   UP      00:50:56:AC:26:92
 
 
-[root@pl-l1-aux-app-02 ~]# lltstat -nvv
+[root@node02 ~]# lltstat -nvv
 LLT node information:
     Node                 State    Link  Status  Address
-     0 pl-l1-aux-app-01  OPEN
+     0 node01  OPEN
                                   ens161   DOWN
                                   ens224   UP      00:50:56:AC:6C:77
-   * 1 pl-l1-aux-app-02  OPEN
+   * 1 node02  OPEN
                                   ens161   UP      00:50:56:AC:15:C4
                                   ens224   UP      00:50:56:AC:26:92
      2                   CONNWAIT
@@ -3579,32 +3579,32 @@ LLT node information:
                                   ens224   DOWN
      3                   CONNWAIT
 
-[root@pl-l1-aux-app-01 ~]# cat /etc/llttab
-set-node pl-l1-aux-app-01
+[root@node01 ~]# cat /etc/llttab
+set-node node01
 set-cluster 35461
 set-timer sendhbcap:1800
 link ens161 eth-00:50:56:ac:f7:ba - ether - -
 link-lowpri ens224 eth-00:50:56:ac:6c:77 - ether - -
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]#
 
 
-[root@pl-l1-aux-app-02 ~]# cat /etc/llttab
-set-node pl-l1-aux-app-02
+[root@node02 ~]# cat /etc/llttab
+set-node node02
 set-cluster 35461
 set-timer sendhbcap:1800
 link ens161 eth-00:50:56:ac:15:c4 - ether - -
 link-lowpri ens224 eth-00:50:56:ac:26:92 - ether - -
-[root@pl-l1-aux-app-02 ~]#
+[root@node02 ~]#
 
 
-[root@pl-l1-aux-app-02 ~]# ping -I ens161 192.168.47.5
+[root@node02 ~]# ping -I ens161 192.168.47.5
 PING 192.168.47.5 (192.168.47.5) from 192.168.47.6 ens161: 56(84) bytes of data.
 From 192.168.47.6 icmp_seq=1 Destination Host Unreachable
 From 192.168.47.6 icmp_seq=2 Destination Host Unreachable
 From 192.168.47.6 icmp_seq=3 Destination Host Unreachable
 
 
-[root@pl-l1-aux-app-01 ~]# ping -I ens161 192.168.47.6
+[root@node01 ~]# ping -I ens161 192.168.47.6
 PING 192.168.47.6 (192.168.47.6) from 192.168.47.5 ens161: 56(84) bytes of data.
 From 192.168.47.5 icmp_seq=1 Destination Host Unreachable
 From 192.168.47.5 icmp_seq=2 Destination Host Unreachable
@@ -3785,33 +3785,33 @@ Install it or source the binaries
 
 
 
-[root@pl-l1-aux-app-01 ~]# vxdisksetup -i /dev/sdb
+[root@node01 ~]# vxdisksetup -i /dev/sdb
 VxVM vxdisksetup ERROR V-5-2-1118 /dev/sdb: Can not get disk information.
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]#
 
-[root@pl-l1-aux-app-01 ~]# vxdg -s init sharedg sdb
+[root@node01 ~]# vxdg -s init sharedg sdb
 VxVM vxdg ERROR V-5-1-19082 Device sdb does not have a label.
 Use command 'vxdisksetup' to intialize the disk.
 
-[root@pl-l1-aux-app-01 ~]# vxddladm listsupport all | grep sdb
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]# vxddladm listsupport all | grep sdb
+[root@node01 ~]#
 
 
-[root@pl-l1-aux-app-01 ~]# vxdisksetup -i VxDMP5
+[root@node01 ~]# vxdisksetup -i VxDMP5
 VxVM  ERROR V-5-1-15404 vxmediadisc: Device path /dev/vx/rdmp/VxDMP5 does not exist.
 VxVM  INFO V-5-1-15407 Usage: vxmediadisc [-p] <disk_path>
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]#
 
 
-[root@pl-l1-aux-app-01 ~]# lsblk | grep 1T
+[root@node01 ~]# lsblk | grep 1T
 sdb                  8:16   0     1T  0 disk
 VxDMP5             201:64   0     1T  0 disk
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]#
 
-[root@pl-l1-aux-app-02 ~]# lsblk | grep 1T
+[root@node02 ~]# lsblk | grep 1T
 sdb                  8:16   0     1T  0 disk
 VxDMP4             201:48   0     1T  0 disk
-[root@pl-l1-aux-app-02 ~]#
+[root@node02 ~]#
 
 
 
@@ -3856,121 +3856,121 @@ mount -t vxfs -o cluster /dev/vx/dsk/sharedg/share_vol /infa_shared
 
 
 Last login: Sun Jun 22 23:28:48 2025 from 10.253.8.115
-[root@pl-l1-aux-app-01 ~]# export PATH=$PATH:/opt/VRTS/bin
-[root@pl-l1-aux-app-01 ~]# vxdisk -e list
+[root@node01 ~]# export PATH=$PATH:/opt/VRTS/bin
+[root@node01 ~]# vxdisk -e list
 DEVICE       TYPE           DISK        GROUP        STATUS               OS_NATIVE_NAME   ATTR
 pl-l1-aux-app-0_vmdk0_0 auto:none      -            -           online invalid       sdd              -
 pl-l1-aux-app-0_vmdk0_1 auto:none      -            -           online invalid       sdc              -
 pl-l1-aux-app-0_vmdk0_2 auto:none      -            -           online invalid       sde              -
 pl-l1-aux-app-0_vmdk0_3 auto:none      -            -           online invalid       sdb              -
 sda          auto:LVM       -            -           LVM                  sda              -
-[root@pl-l1-aux-app-01 ~]# vxdisksetup -i sdb
+[root@node01 ~]# vxdisksetup -i sdb
 VxVM  ERROR V-5-1-15404 vxmediadisc: Device path /dev/vx/rdmp/sdb does not exist.
 VxVM  INFO V-5-1-15407 Usage: vxmediadisc [-p] <disk_path>
-[root@pl-l1-aux-app-01 ~]# vxdisksetup -i pl-l1-aux-app-0_vmdk0_3
-[root@pl-l1-aux-app-01 ~]# vxdisk -e list
+[root@node01 ~]# vxdisksetup -i pl-l1-aux-app-0_vmdk0_3
+[root@node01 ~]# vxdisk -e list
 DEVICE       TYPE           DISK        GROUP        STATUS               OS_NATIVE_NAME   ATTR
 pl-l1-aux-app-0_vmdk0_0 auto:none      -            -           online invalid       sdd              -
 pl-l1-aux-app-0_vmdk0_1 auto:none      -            -           online invalid       sdc              -
 pl-l1-aux-app-0_vmdk0_2 auto:none      -            -           online invalid       sde              -
 pl-l1-aux-app-0_vmdk0_3 auto:cdsdisk   -            -           online               sdb              -
 sda          auto:LVM       -            -           LVM                  sda              -
-[root@pl-l1-aux-app-01 ~]# vxdg -s init sharedg pl-l1-aux-app-0_vmdk0_3
-[root@pl-l1-aux-app-01 ~]# vxdisk -e list
+[root@node01 ~]# vxdg -s init sharedg pl-l1-aux-app-0_vmdk0_3
+[root@node01 ~]# vxdisk -e list
 DEVICE       TYPE           DISK        GROUP        STATUS               OS_NATIVE_NAME   ATTR
 pl-l1-aux-app-0_vmdk0_0 auto:none      -            -           online invalid       sdd              -
 pl-l1-aux-app-0_vmdk0_1 auto:none      -            -           online invalid       sdc              -
 pl-l1-aux-app-0_vmdk0_2 auto:none      -            -           online invalid       sde              -
 pl-l1-aux-app-0_vmdk0_3 auto:cdsdisk   pl-l1-aux-app-0_vmdk0_3  sharedg     online shared        sdb              -
 sda          auto:LVM       -            -           LVM                  sda              -
-[root@pl-l1-aux-app-01 ~]# vxdisk -e list
+[root@node01 ~]# vxdisk -e list
 DEVICE       TYPE           DISK        GROUP        STATUS               OS_NATIVE_NAME   ATTR
 pl-l1-aux-app-0_vmdk0_0 auto:none      -            -           online invalid       sdd              -
 pl-l1-aux-app-0_vmdk0_1 auto:none      -            -           online invalid       sdc              -
 pl-l1-aux-app-0_vmdk0_2 auto:none      -            -           online invalid       sde              -
 pl-l1-aux-app-0_vmdk0_3 auto:cdsdisk   pl-l1-aux-app-0_vmdk0_3  sharedg     online shared        sdb              -
 sda          auto:LVM       -            -           LVM                  sda              -
-[root@pl-l1-aux-app-01 ~]# hastatus -sum
+[root@node01 ~]# hastatus -sum
 
 -- SYSTEM STATE
 -- System               State                Frozen
 
-A  pl-l1-aux-app-01     RUNNING              0
-A  pl-l1-aux-app-02     RUNNING              0
+A  node01     RUNNING              0
+A  node02     RUNNING              0
 
 -- GROUP STATE
 -- Group           System               Probed     AutoDisabled    State
 
-B  cvm             pl-l1-aux-app-01     Y          N               ONLINE
-B  cvm             pl-l1-aux-app-02     Y          N               ONLINE
-[root@pl-l1-aux-app-01 ~]# vxassist -g sharedg make share_vol 1000G
-[root@pl-l1-aux-app-01 ~]# vxdisk -e list
+B  cvm             node01     Y          N               ONLINE
+B  cvm             node02     Y          N               ONLINE
+[root@node01 ~]# vxassist -g sharedg make share_vol 1000G
+[root@node01 ~]# vxdisk -e list
 DEVICE       TYPE           DISK        GROUP        STATUS               OS_NATIVE_NAME   ATTR
 pl-l1-aux-app-0_vmdk0_0 auto:none      -            -           online invalid       sdd              -
 pl-l1-aux-app-0_vmdk0_1 auto:none      -            -           online invalid       sdc              -
 pl-l1-aux-app-0_vmdk0_2 auto:none      -            -           online invalid       sde              -
 pl-l1-aux-app-0_vmdk0_3 auto:cdsdisk   pl-l1-aux-app-0_vmdk0_3  sharedg     online shared        sdb              -
 sda          auto:LVM       -            -           LVM                  sda              -
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]#
 
-[root@pl-l1-aux-app-01 ~]# hastatus -sum
+[root@node01 ~]# hastatus -sum
 
 -- SYSTEM STATE
 -- System               State                Frozen
 
-A  pl-l1-aux-app-01     RUNNING              0
-A  pl-l1-aux-app-02     RUNNING              0
+A  node01     RUNNING              0
+A  node02     RUNNING              0
 
 -- GROUP STATE
 -- Group           System               Probed     AutoDisabled    State
 
-B  cvm             pl-l1-aux-app-01     Y          N               ONLINE
-B  cvm             pl-l1-aux-app-02     Y          N               ONLINE
-[root@pl-l1-aux-app-01 ~]# vxdisk -e list
+B  cvm             node01     Y          N               ONLINE
+B  cvm             node02     Y          N               ONLINE
+[root@node01 ~]# vxdisk -e list
 DEVICE       TYPE           DISK        GROUP        STATUS               OS_NATIVE_NAME   ATTR
 pl-l1-aux-app-0_vmdk0_0 auto:none      -            -           online invalid       sdd              -
 pl-l1-aux-app-0_vmdk0_1 auto:none      -            -           online invalid       sdc              -
 pl-l1-aux-app-0_vmdk0_2 auto:none      -            -           online invalid       sde              -
 pl-l1-aux-app-0_vmdk0_3 auto:cdsdisk   pl-l1-aux-app-0_vmdk0_3  sharedg     online shared        sdb              -
 sda          auto:LVM       -            -           LVM                  sda              -
-[root@pl-l1-aux-app-01 ~]# mkdir -p /infa_shared
-[root@pl-l1-aux-app-01 ~]# df -Th /infa_shared
+[root@node01 ~]# mkdir -p /infa_shared
+[root@node01 ~]# df -Th /infa_shared
 Filesystem                 Type  Size  Used Avail Use% Mounted on
 /dev/mapper/vg_01-LogVol00 ext4   45G   20G   23G  48% /
-[root@pl-l1-aux-app-01 ~]# mount -t vxfs -o cluster /dev/vx/dsk/sharedg/share_vol /infa_shared
+[root@node01 ~]# mount -t vxfs -o cluster /dev/vx/dsk/sharedg/share_vol /infa_shared
 UX:vxfs mount.vxfs: ERROR: V-3-20012: not a valid vxfs file system
 UX:vxfs mount.vxfs: ERROR: V-3-24996: Unable to get disk layout version
-[root@pl-l1-aux-app-01 ~]# mkfs -t vxfs /dev/vx/dsk/sharedg/share_vol
+[root@node01 ~]# mkfs -t vxfs /dev/vx/dsk/sharedg/share_vol
     version 16 layout
     2097152000 sectors, 1048576000 blocks of size 1024, log size 262144 blocks
     rcq size 16384 blocks
     largefiles supported
     maxlink supported
     WORM not supported
-[root@pl-l1-aux-app-01 ~]# mount -t vxfs -o cluster /dev/vx/dsk/sharedg/share_vol /infa_shared
-[root@pl-l1-aux-app-01 ~]# df -Th /infa_shared
+[root@node01 ~]# mount -t vxfs -o cluster /dev/vx/dsk/sharedg/share_vol /infa_shared
+[root@node01 ~]# df -Th /infa_shared
 Filesystem                    Type  Size  Used Avail Use% Mounted on
 /dev/vx/dsk/sharedg/share_vol vxfs 1000G  525M  938G   1% /infa_shared
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]#
 
-[root@pl-l1-aux-app-01 ~]# vxdisk -e list
+[root@node01 ~]# vxdisk -e list
 DEVICE       TYPE           DISK        GROUP        STATUS               OS_NATIVE_NAME   ATTR
 pl-l1-aux-app-0_vmdk0_0 auto:none      -            -           online invalid       sdd              -
 pl-l1-aux-app-0_vmdk0_1 auto:none      -            -           online invalid       sdc              -
 pl-l1-aux-app-0_vmdk0_2 auto:none      -            -           online invalid       sde              -
 pl-l1-aux-app-0_vmdk0_3 auto:cdsdisk   pl-l1-aux-app-0_vmdk0_3  sharedg     online shared        sdb              -
 sda          auto:LVM       -            -           LVM                  sda              -
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]#
 
 
-[root@pl-l1-aux-app-02 ~]# vxdisk -e list
+[root@node02 ~]# vxdisk -e list
 DEVICE       TYPE           DISK        GROUP        STATUS               OS_NATIVE_NAME   ATTR
 pl-l1-aux-app-0_vmdk0_0 auto:none      -            -           online invalid       sdd              -
 pl-l1-aux-app-0_vmdk0_1 auto:none      -            -           online invalid       sdc              -
 pl-l1-aux-app-0_vmdk0_2 auto:none      -            -           online invalid       sde              -
 pl-l1-aux-app-0_vmdk0_3 auto:cdsdisk   pl-l1-aux-app-0_vmdk0_3  sharedg     online shared        sdb              -
 sda          auto:LVM       -            -           LVM                  sda              -
-[root@pl-l1-aux-app-02 ~]# df -Th
+[root@node02 ~]# df -Th
 Filesystem                 Type      Size  Used Avail Use% Mounted on
 devtmpfs                   devtmpfs   16G     0   16G   0% /dev
 tmpfs                      tmpfs      16G     0   16G   0% /dev/shm
@@ -3984,9 +3984,9 @@ tmpfs                      tmpfs      16G     0   16G   0% /sys/fs/cgroup
 /dev/mapper/vg_01-LogVol04 ext4       15G  1.2G   13G   9% /var/log
 /dev/mapper/vg_01-lv_audit ext4      997M   38M  892M   5% /var/log/audit
 tmpfs                      tmpfs     3.2G     0  3.2G   0% /run/user/0
-[root@pl-l1-aux-app-02 ~]# mkdir -p /infa_shared
-[root@pl-l1-aux-app-02 ~]# mount -t vxfs -o cluster /dev/vx/dsk/sharedg/share_vol /infa_shared
-[root@pl-l1-aux-app-02 ~]# df -Th
+[root@node02 ~]# mkdir -p /infa_shared
+[root@node02 ~]# mount -t vxfs -o cluster /dev/vx/dsk/sharedg/share_vol /infa_shared
+[root@node02 ~]# df -Th
 Filesystem                    Type      Size  Used Avail Use% Mounted on
 devtmpfs                      devtmpfs   16G     0   16G   0% /dev
 tmpfs                         tmpfs      16G     0   16G   0% /dev/shm
@@ -4001,13 +4001,13 @@ tmpfs                         tmpfs      16G     0   16G   0% /sys/fs/cgroup
 /dev/mapper/vg_01-lv_audit    ext4      997M   38M  892M   5% /var/log/audit
 tmpfs                         tmpfs     3.2G     0  3.2G   0% /run/user/0
 /dev/vx/dsk/sharedg/share_vol vxfs     1000G  797M  937G   1% /infa_shared
-[root@pl-l1-aux-app-02 ~]# touch /infa_shared/file123
-[root@pl-l1-aux-app-02 ~]#
+[root@node02 ~]# touch /infa_shared/file123
+[root@node02 ~]#
 
 
-[root@pl-l1-aux-app-02 ~]# mkdir -p /infa_shared
-[root@pl-l1-aux-app-02 ~]# mount -t vxfs -o cluster /dev/vx/dsk/sharedg/share_vol /infa_shared
-[root@pl-l1-aux-app-02 ~]# df -Th
+[root@node02 ~]# mkdir -p /infa_shared
+[root@node02 ~]# mount -t vxfs -o cluster /dev/vx/dsk/sharedg/share_vol /infa_shared
+[root@node02 ~]# df -Th
 Filesystem                    Type      Size  Used Avail Use% Mounted on
 devtmpfs                      devtmpfs   16G     0   16G   0% /dev
 tmpfs                         tmpfs      16G     0   16G   0% /dev/shm
@@ -4022,61 +4022,61 @@ tmpfs                         tmpfs      16G     0   16G   0% /sys/fs/cgroup
 /dev/mapper/vg_01-lv_audit    ext4      997M   38M  892M   5% /var/log/audit
 tmpfs                         tmpfs     3.2G     0  3.2G   0% /run/user/0
 /dev/vx/dsk/sharedg/share_vol vxfs     1000G  797M  937G   1% /infa_shared
-[root@pl-l1-aux-app-02 ~]# touch /infa_shared/file123
-[root@pl-l1-aux-app-02 ~]#
+[root@node02 ~]# touch /infa_shared/file123
+[root@node02 ~]#
 
 
 
-[root@pl-l1-aux-app-01 ~]# ll /infa_shared/file123
+[root@node01 ~]# ll /infa_shared/file123
 -rw-------. 1 root root 0 Jun 22 23:59 /infa_shared/file123
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]#
 
 
 
-[root@pl-l1-aux-app-01 ~]# hastatus -sum
+[root@node01 ~]# hastatus -sum
 
 -- SYSTEM STATE
 -- System               State                Frozen
 
-A  pl-l1-aux-app-01     RUNNING              0
-A  pl-l1-aux-app-02     RUNNING              0
+A  node01     RUNNING              0
+A  node02     RUNNING              0
 
 -- GROUP STATE
 -- Group           System               Probed     AutoDisabled    State
 
-B  cvm             pl-l1-aux-app-01     Y          N               ONLINE
-B  cvm             pl-l1-aux-app-02     Y          N               ONLINE
-[root@pl-l1-aux-app-01 ~]# vxdisk -e list
+B  cvm             node01     Y          N               ONLINE
+B  cvm             node02     Y          N               ONLINE
+[root@node01 ~]# vxdisk -e list
 DEVICE       TYPE           DISK        GROUP        STATUS               OS_NATIVE_NAME   ATTR
 pl-l1-aux-app-0_vmdk0_0 auto:none      -            -           online invalid       sdd              -
 pl-l1-aux-app-0_vmdk0_1 auto:none      -            -           online invalid       sdc              -
 pl-l1-aux-app-0_vmdk0_2 auto:none      -            -           online invalid       sde              -
 pl-l1-aux-app-0_vmdk0_3 auto:cdsdisk   pl-l1-aux-app-0_vmdk0_3  sharedg     online shared        sdb              -
 sda          auto:LVM       -            -           LVM                  sda              -
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]#
 
 
-[root@pl-l1-aux-app-02 ~]# hastatus -sum
+[root@node02 ~]# hastatus -sum
 
 -- SYSTEM STATE
 -- System               State                Frozen
 
-A  pl-l1-aux-app-01     RUNNING              0
-A  pl-l1-aux-app-02     RUNNING              0
+A  node01     RUNNING              0
+A  node02     RUNNING              0
 
 -- GROUP STATE
 -- Group           System               Probed     AutoDisabled    State
 
-B  cvm             pl-l1-aux-app-01     Y          N               ONLINE
-B  cvm             pl-l1-aux-app-02     Y          N               ONLINE
-[root@pl-l1-aux-app-02 ~]# vxdisk -e list
+B  cvm             node01     Y          N               ONLINE
+B  cvm             node02     Y          N               ONLINE
+[root@node02 ~]# vxdisk -e list
 DEVICE       TYPE           DISK        GROUP        STATUS               OS_NATIVE_NAME   ATTR
 pl-l1-aux-app-0_vmdk0_0 auto:none      -            -           online invalid       sdd              -
 pl-l1-aux-app-0_vmdk0_1 auto:none      -            -           online invalid       sdc              -
 pl-l1-aux-app-0_vmdk0_2 auto:none      -            -           online invalid       sde              -
 pl-l1-aux-app-0_vmdk0_3 auto:cdsdisk   pl-l1-aux-app-0_vmdk0_3  sharedg     online shared        sdb              -
 sda          auto:LVM       -            -           LVM                  sda              -
-[root@pl-l1-aux-app-02 ~]#
+[root@node02 ~]#
 
 
 
@@ -4167,7 +4167,7 @@ for /dev/vx/dsk/sharedg/share_vol
 
 Dinesh
 
-hagrp -add cfs-sg pl-l1-aux-app-01 pl-l1-aux-app-02
+hagrp -add cfs-sg node01 node02
 hares -add cfsvol1 Volume cfs-sg
 hares -modify cfsvol1 diskgroup shared
 hares -modify cfsvol1 volume share_vol
@@ -4181,13 +4181,13 @@ hares -modify cfsmount1 FSType vxfs
 hares -modify cfsmount1 Enabled 1
 
   762  23/06/25 06:26:39 haconf -makerw
-  763  23/06/25 06:26:50 hagrp -create cfs-sg pl-l1-aux-app-01 pl-l1-aux-app-02
-  764  23/06/25 06:27:42 hagrp -add cfs-sg pl-l1-aux-app-01 pl-l1-aux-app-02
+  763  23/06/25 06:26:50 hagrp -create cfs-sg node01 node02
+  764  23/06/25 06:27:42 hagrp -add cfs-sg node01 node02
   765  23/06/25 06:29:00 hagrp -add cfs-sg
   766  23/06/25 06:29:56 hastatus -sum
   767  23/06/25 06:31:14 hagrp -add cfs-sg
-  768  23/06/25 06:32:22 hagrp -modify cfs-sg SystemList pl-l1-aux-app-01 pl-l1-aux-app-02
-  769  23/06/25 06:32:43 hagrp -modify cfs-sg SystemList pl-l1-aux-app-01 1 pl-l1-aux-app-02 2
+  768  23/06/25 06:32:22 hagrp -modify cfs-sg SystemList node01 node02
+  769  23/06/25 06:32:43 hagrp -modify cfs-sg SystemList node01 1 node02 2
   770  23/06/25 06:33:00 hares -add cfsvol1 volume cfs-sg
   771  23/06/25 06:33:21 hares -add cfsvol1 Volume cfs-sg
   772  23/06/25 06:33:37 hares -modify cfsvol1 diskgroup shared
@@ -4207,8 +4207,8 @@ hares -modify cfsmount1 Enabled 1
   786  23/06/25 06:38:19 hastatus -sum
   787  23/06/25 06:39:56 df -h
   788  23/06/25 06:40:01 hastatus -sum
-  789  23/06/25 06:40:17 hagrp -online pl-l1-aux-app-01
-  790  23/06/25 06:41:07 hagrp -online cfs-sg -sys pl-l1-aux-app-01
+  789  23/06/25 06:40:17 hagrp -online node01
+  790  23/06/25 06:41:07 hagrp -online cfs-sg -sys node01
   791  23/06/25 06:41:16 hastatus -sum
   792  23/06/25 06:43:19 cat /etc/VRTSvcs/conf/config/types.cf
   793  23/06/25 06:43:40 cat /etc/VRTSvcs/conf/types.cf
@@ -4219,7 +4219,7 @@ hares -modify cfsmount1 Enabled 1
   798  23/06/25 06:47:24 hares -modify cfsmount1 AMFMountType vxfs
   799  23/06/25 06:47:34 hastatus -sum
   800  23/06/25 06:47:57 tail -f /var/VRTSvcs/log/engine_A.log
-  801  23/06/25 06:50:34 hares -probe cfsmount1 -sys pl-l1-aux-app-01
+  801  23/06/25 06:50:34 hares -probe cfsmount1 -sys node01
   802  23/06/25 06:50:40 hastatus -sum
   803  23/06/25 06:50:46 tail -f /var/VRTSvcs/log/engine_A.log
   804  23/06/25 06:51:33 hacf -verify /etc/VRTSvcs/conf/config
@@ -4243,7 +4243,7 @@ hares -modify cfsmount1 Enabled 1
   822  23/06/25 07:12:11 aconf -makerw
   823  23/06/25 07:12:16 haconf -makerw
   824  23/06/25 07:12:27 hares -modify cfsmount1 FsckOpt "n"
-  825  23/06/25 07:13:11 hagrp -online cfs-sg -sys pl-l1-aux-app-01 pl-l1-aux-app-02
+  825  23/06/25 07:13:11 hagrp -online cfs-sg -sys node01 node02
   826  23/06/25 07:13:25 hastatus -sum
   827  23/06/25 07:13:49 haconf -dump -makero
   828  23/06/25 07:17:18 hastatus -sum
@@ -4265,18 +4265,18 @@ hares -modify cfsmount1 Enabled 1
   844  23/06/25 22:20:53 lsblk
   845  23/06/25 22:22:23 hastatus -sum
   846  23/06/25 22:23:23 haconf -makerw
-  847  23/06/25 22:23:46 hares -probe cfsmount1 -sys pl-l1-aux-app-01
-  848  23/06/25 22:23:53 hares -probe cfsmount1 -sys pl-l1-aux-app-02
+  847  23/06/25 22:23:46 hares -probe cfsmount1 -sys node01
+  848  23/06/25 22:23:53 hares -probe cfsmount1 -sys node02
   849  23/06/25 22:24:02 haconf -dump -makero
   850  23/06/25 22:24:07 hastatus -sum
-  851  23/06/25 22:24:33 hagrp -online cfs-sg -sys pl-l1-aux-app-01
+  851  23/06/25 22:24:33 hagrp -online cfs-sg -sys node01
   852  23/06/25 22:25:19 hastatus -sum
   853  23/06/25 22:25:26 ps -ef | grep -i had
   854  23/06/25 22:26:10 haconf -makerw
   855  23/06/25 22:26:10 hagrp -enable cfs-sg
   856  23/06/25 22:26:10 haconf -dump -makero
   857  23/06/25 22:26:17 hastatus -sum
-  858  23/06/25 22:26:27 hagrp -online cfs-sg -sys pl-l1-aux-app-01
+  858  23/06/25 22:26:27 hagrp -online cfs-sg -sys node01
   859  23/06/25 22:27:09 df -Th
   860  23/06/25 22:28:55 lltstat -nvv
   861  23/06/25 22:29:15 gabconfig -a
@@ -4294,30 +4294,30 @@ hastatus -sum
 -- SYSTEM STATE
 -- System               State                Frozen
 
-A  pl-l1-aux-app-01     RUNNING              0
-A  pl-l1-aux-app-02     RUNNING              0
+A  node01     RUNNING              0
+A  node02     RUNNING              0
 
 -- GROUP STATE
 -- Group           System               Probed     AutoDisabled    State
 
-B  cfs-sg          pl-l1-aux-app-01     N          Y               OFFLINE
-B  cfs-sg          pl-l1-aux-app-02     N          Y               OFFLINE
-B  cvm             pl-l1-aux-app-01     Y          N               ONLINE
-B  cvm             pl-l1-aux-app-02     Y          N               ONLINE
-B  vrts_vea_cfs_int_cfsmount2 pl-l1-aux-app-01     Y          N               ONLINE
-B  vrts_vea_cfs_int_cfsmount2 pl-l1-aux-app-02     Y          N               ONLINE
+B  cfs-sg          node01     N          Y               OFFLINE
+B  cfs-sg          node02     N          Y               OFFLINE
+B  cvm             node01     Y          N               ONLINE
+B  cvm             node02     Y          N               ONLINE
+B  vrts_vea_cfs_int_cfsmount2 node01     Y          N               ONLINE
+B  vrts_vea_cfs_int_cfsmount2 node02     Y          N               ONLINE
 
 -- RESOURCES NOT PROBED
 -- Group           Type                 Resource             System
 
-E  cfs-sg          Mount                cfsmount1            pl-l1-aux-app-01
-E  cfs-sg          Mount                cfsmount1            pl-l1-aux-app-02
+E  cfs-sg          Mount                cfsmount1            node01
+E  cfs-sg          Mount                cfsmount1            node02
 
 
 group cfs-sg (
-        SystemList = { pl-l1-aux-app-01 = 1, pl-l1-aux-app-02 = 2 }
-        Enabled @pl-l1-aux-app-01 = 0
-        Enabled @pl-l1-aux-app-02 = 0
+        SystemList = { node01 = 1, node02 = 2 }
+        Enabled @node01 = 0
+        Enabled @node02 = 0
         )
 
         Volume cfsvol1 (
@@ -4353,36 +4353,36 @@ ll /dev/vx/dsk/sharedg/share_vol /infa_shared
 
 
 
-[root@pl-l1-aux-app-01 ~]# hastatus -sum
+[root@node01 ~]# hastatus -sum
 
 -- SYSTEM STATE
 -- System               State                Frozen
 
-A  pl-l1-aux-app-01     RUNNING              0
-A  pl-l1-aux-app-02     RUNNING              0
+A  node01     RUNNING              0
+A  node02     RUNNING              0
 
 -- GROUP STATE
 -- Group           System               Probed     AutoDisabled    State
 
-B  cvm             pl-l1-aux-app-01     Y          N               ONLINE
-B  cvm             pl-l1-aux-app-02     Y          N               ONLINE
-[root@pl-l1-aux-app-01 ~]# ll /dev/vx/dsk/sharedg/share_vol /infa_shared
+B  cvm             node01     Y          N               ONLINE
+B  cvm             node02     Y          N               ONLINE
+[root@node01 ~]# ll /dev/vx/dsk/sharedg/share_vol /infa_shared
 brw-------. 1 root root 199, 37000 Jun 24 04:01 /dev/vx/dsk/sharedg/share_vol
 
 
 
  hares -display infa_mount | grep -E "infa_shared|vxfs|sharedg"
-infa_mount   ArgListValues         pl-l1-aux-app-01 MountPoint  1       /infa_shared    BlockDevice     1       /dev/vx/dsk/sharedg/share_vol FSType  1       vxfs    MountOpt        1       rw,cluster,crw,delaylog,largefiles,ioerror=mdisable,noatime,nomtime     FsckOpt       1       ""      SnapUmount      1       0       CkptUmount      1       1       BindUmount      1       1       OptCheck     10       CreateMntPt     1       0       MntPtPermission 1       ""      MntPtOwner      1       ""      MntPtGroup      1       ""   AccessPermissionChk      1       0       RecursiveMnt    1       0       VxFSMountLock   1       1       CacheRestoreAccess      1    0
-infa_mount   ArgListValues         pl-l1-aux-app-02 MountPoint  1       /infa_shared    BlockDevice     1       /dev/vx/dsk/sharedg/share_vol FSType  1       vxfs    MountOpt        1       rw,cluster,crw,delaylog,largefiles,ioerror=mdisable,noatime,nomtime     FsckOpt       1       ""      SnapUmount      1       0       CkptUmount      1       1       BindUmount      1       1       OptCheck     10       CreateMntPt     1       0       MntPtPermission 1       ""      MntPtOwner      1       ""      MntPtGroup      1       ""   AccessPermissionChk      1       0       RecursiveMnt    1       0       VxFSMountLock   1       1       CacheRestoreAccess      1    0
+infa_mount   ArgListValues         node01 MountPoint  1       /infa_shared    BlockDevice     1       /dev/vx/dsk/sharedg/share_vol FSType  1       vxfs    MountOpt        1       rw,cluster,crw,delaylog,largefiles,ioerror=mdisable,noatime,nomtime     FsckOpt       1       ""      SnapUmount      1       0       CkptUmount      1       1       BindUmount      1       1       OptCheck     10       CreateMntPt     1       0       MntPtPermission 1       ""      MntPtOwner      1       ""      MntPtGroup      1       ""   AccessPermissionChk      1       0       RecursiveMnt    1       0       VxFSMountLock   1       1       CacheRestoreAccess      1    0
+infa_mount   ArgListValues         node02 MountPoint  1       /infa_shared    BlockDevice     1       /dev/vx/dsk/sharedg/share_vol FSType  1       vxfs    MountOpt        1       rw,cluster,crw,delaylog,largefiles,ioerror=mdisable,noatime,nomtime     FsckOpt       1       ""      SnapUmount      1       0       CkptUmount      1       1       BindUmount      1       1       OptCheck     10       CreateMntPt     1       0       MntPtPermission 1       ""      MntPtOwner      1       ""      MntPtGroup      1       ""   AccessPermissionChk      1       0       RecursiveMnt    1       0       VxFSMountLock   1       1       CacheRestoreAccess      1    0
 infa_mount   BlockDevice           global           /dev/vx/dsk/sharedg/share_vol
 infa_mount   FSType                global           vxfs
 infa_mount   MountPoint            global           /infa_shared
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]#
 
 
 /infa_shared:
 total 0
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]#
 
 
 
@@ -4466,27 +4466,27 @@ mount — should show mounted with vxfs and cluster option
 
 
 
-[root@pl-l1-aux-app-01 ~]# hastatus -sum
+[root@node01 ~]# hastatus -sum
 
 -- SYSTEM STATE
 -- System               State                Frozen
 
-A  pl-l1-aux-app-01     RUNNING              0
-A  pl-l1-aux-app-02     RUNNING              0
+A  node01     RUNNING              0
+A  node02     RUNNING              0
 
 -- GROUP STATE
 -- Group           System               Probed     AutoDisabled    State
 
-B  cvm             pl-l1-aux-app-01     Y          N               ONLINE
-B  cvm             pl-l1-aux-app-02     Y          N               ONLINE
-B  infa_sg         pl-l1-aux-app-01     N          N               OFFLINE
-B  infa_sg         pl-l1-aux-app-02     N          N               OFFLINE
+B  cvm             node01     Y          N               ONLINE
+B  cvm             node02     Y          N               ONLINE
+B  infa_sg         node01     N          N               OFFLINE
+B  infa_sg         node02     N          N               OFFLINE
 
 -- RESOURCES NOT PROBED
 -- Group           Type                 Resource             System
 
-E  infa_sg         Mount                infa_mount           pl-l1-aux-app-01
-E  infa_sg         Mount                infa_mount           pl-l1-aux-app-02
+E  infa_sg         Mount                infa_mount           node01
+E  infa_sg         Mount                infa_mount           node02
 
 
 
@@ -4495,22 +4495,22 @@ E  infa_sg         Mount                infa_mount           pl-l1-aux-app-02
 -- SYSTEM STATE
 -- System               State                Frozen
 
-A  pl-l1-aux-app-01     RUNNING              0
-A  pl-l1-aux-app-02     RUNNING              0
+A  node01     RUNNING              0
+A  node02     RUNNING              0
 
 -- GROUP STATE
 -- Group           System               Probed     AutoDisabled    State
 
-B  cvm             pl-l1-aux-app-01     Y          N               ONLINE
-B  cvm             pl-l1-aux-app-02     Y          N               ONLINE
-B  infa_sg         pl-l1-aux-app-01     N          Y               OFFLINE
-B  infa_sg         pl-l1-aux-app-02     N          Y               OFFLINE
+B  cvm             node01     Y          N               ONLINE
+B  cvm             node02     Y          N               ONLINE
+B  infa_sg         node01     N          Y               OFFLINE
+B  infa_sg         node02     N          Y               OFFLINE
 
 -- RESOURCES NOT PROBED
 -- Group           Type                 Resource             System
 
-E  infa_sg         Mount                infa_mount           pl-l1-aux-app-01
-E  infa_sg         Mount                infa_mount           pl-l1-aux-app-02
+E  infa_sg         Mount                infa_mount           node01
+E  infa_sg         Mount                infa_mount           node02
 
 
 
@@ -4535,27 +4535,27 @@ cluster auxlab_poc (
         HacliUserLevel = COMMANDROOT
         )
 
-system pl-l1-aux-app-01 (
+system node01 (
         )
 
-system pl-l1-aux-app-02 (
+system node02 (
         )
 
 group cvm (
-        SystemList = { pl-l1-aux-app-01 = 0, pl-l1-aux-app-02 = 1 }
+        SystemList = { node01 = 0, node02 = 1 }
         AutoFailOver = 0
         Parallel = 1
-        AutoStartList = { pl-l1-aux-app-01, pl-l1-aux-app-02 }
+        AutoStartList = { node01, node02 }
         )
 
         CFSfsckd vxfsckd (
-                ActivationMode @pl-l1-aux-app-01 = { sharedg = sw }
-                ActivationMode @pl-l1-aux-app-02 = { sharedg = sw }
+                ActivationMode @node01 = { sharedg = sw }
+                ActivationMode @node02 = { sharedg = sw }
                 )
 
         CVMCluster cvm_clus (
                 CVMClustName = auxlab_poc
-                CVMNodeId = { pl-l1-aux-app-01 = 0, pl-l1-aux-app-02 = 1 }
+                CVMNodeId = { node01 = 0, node02 = 1 }
                 CVMTransport = gab
                 CVMTimeout = 200
                 )
@@ -4592,7 +4592,7 @@ group cvm (
 
 
 group infa_sg (
-        SystemList = { pl-l1-aux-app-01 = 0, pl-l1-aux-app-02 = 1 }
+        SystemList = { node01 = 0, node02 = 1 }
         )
 
         Mount infa_mount (
@@ -4690,7 +4690,7 @@ echo "✅ Configuration completed successfully."
 
 
 
-[root@pl-l1-aux-app-01 ~]# cat vcs_health_check.sh
+[root@node01 ~]# cat vcs_health_check.sh
 #!/bin/bash
 
 # -----------------------------------------------------------------------------
@@ -4762,6 +4762,6 @@ hares -state | egrep "OFFLINE|FAULTED"
 echo "===================="
 echo "✅ Cluster health check completed."
 
-[root@pl-l1-aux-app-01 ~]#
+[root@node01 ~]#
 
 
