@@ -1025,7 +1025,7 @@ tmpfs                         tmpfs     3.2G     0  3.2G   0% /run/user/0
 
 [root@node01 ~]# vxdisk -o alldgs list
 DEVICE          TYPE            DISK         GROUP        STATUS
-pl-l1-aux-app-0_vmdk0_3 auto:cdsdisk    pl-l1-aux-app-0_vmdk0_3  sharedg      online shared
+node01_vmdk0_3 auto:cdsdisk    node01_vmdk0_3  sharedg      online shared
 sda          auto:LVM        -            -            LVM
 [root@node01 ~]# vxprint -ht
 Disk group: sharedg
@@ -1049,11 +1049,11 @@ SR NAME         KSTATE
 
 dg sharedg      default      default  37000    1750661268.10.node01.lab.uprising.t-mobile.com
 
-dm pl-l1-aux-app-0_vmdk0_3 pl-l1-aux-app-0_vmdk0_3 auto 65536 2147417808 -
+dm node01_vmdk0_3 node01_vmdk0_3 auto 65536 2147417808 -
 
 v  share_vol    -            ENABLED  ACTIVE   2097152000 SELECT  -        fsgen
 pl share_vol-01 share_vol    ENABLED  ACTIVE   2097152000 CONCAT  -        RW
-sd pl-l1-aux-app-0_vmdk0_3-01 share_vol-01 pl-l1-aux-app-0_vmdk0_3 0 2097152000 0 pl-l1-aux-app-0_vmdk0_3 ENA
+sd node01_vmdk0_3-01 share_vol-01 node01_vmdk0_3 0 2097152000 0 node01_vmdk0_3 ENA
 [root@node01 ~]#
 
 
@@ -3859,36 +3859,36 @@ Last login: Sun Jun 22 23:28:48 2025 from 10.253.8.115
 [root@node01 ~]# export PATH=$PATH:/opt/VRTS/bin
 [root@node01 ~]# vxdisk -e list
 DEVICE       TYPE           DISK        GROUP        STATUS               OS_NATIVE_NAME   ATTR
-pl-l1-aux-app-0_vmdk0_0 auto:none      -            -           online invalid       sdd              -
-pl-l1-aux-app-0_vmdk0_1 auto:none      -            -           online invalid       sdc              -
-pl-l1-aux-app-0_vmdk0_2 auto:none      -            -           online invalid       sde              -
-pl-l1-aux-app-0_vmdk0_3 auto:none      -            -           online invalid       sdb              -
+node01_vmdk0_0 auto:none      -            -           online invalid       sdd              -
+node01_vmdk0_1 auto:none      -            -           online invalid       sdc              -
+node01_vmdk0_2 auto:none      -            -           online invalid       sde              -
+node01_vmdk0_3 auto:none      -            -           online invalid       sdb              -
 sda          auto:LVM       -            -           LVM                  sda              -
 [root@node01 ~]# vxdisksetup -i sdb
 VxVM  ERROR V-5-1-15404 vxmediadisc: Device path /dev/vx/rdmp/sdb does not exist.
 VxVM  INFO V-5-1-15407 Usage: vxmediadisc [-p] <disk_path>
-[root@node01 ~]# vxdisksetup -i pl-l1-aux-app-0_vmdk0_3
+[root@node01 ~]# vxdisksetup -i node01_vmdk0_3
 [root@node01 ~]# vxdisk -e list
 DEVICE       TYPE           DISK        GROUP        STATUS               OS_NATIVE_NAME   ATTR
-pl-l1-aux-app-0_vmdk0_0 auto:none      -            -           online invalid       sdd              -
-pl-l1-aux-app-0_vmdk0_1 auto:none      -            -           online invalid       sdc              -
-pl-l1-aux-app-0_vmdk0_2 auto:none      -            -           online invalid       sde              -
-pl-l1-aux-app-0_vmdk0_3 auto:cdsdisk   -            -           online               sdb              -
+node01_vmdk0_0 auto:none      -            -           online invalid       sdd              -
+node01_vmdk0_1 auto:none      -            -           online invalid       sdc              -
+node01_vmdk0_2 auto:none      -            -           online invalid       sde              -
+node01_vmdk0_3 auto:cdsdisk   -            -           online               sdb              -
 sda          auto:LVM       -            -           LVM                  sda              -
-[root@node01 ~]# vxdg -s init sharedg pl-l1-aux-app-0_vmdk0_3
+[root@node01 ~]# vxdg -s init sharedg node01_vmdk0_3
 [root@node01 ~]# vxdisk -e list
 DEVICE       TYPE           DISK        GROUP        STATUS               OS_NATIVE_NAME   ATTR
-pl-l1-aux-app-0_vmdk0_0 auto:none      -            -           online invalid       sdd              -
-pl-l1-aux-app-0_vmdk0_1 auto:none      -            -           online invalid       sdc              -
-pl-l1-aux-app-0_vmdk0_2 auto:none      -            -           online invalid       sde              -
-pl-l1-aux-app-0_vmdk0_3 auto:cdsdisk   pl-l1-aux-app-0_vmdk0_3  sharedg     online shared        sdb              -
+node01_vmdk0_0 auto:none      -            -           online invalid       sdd              -
+node01_vmdk0_1 auto:none      -            -           online invalid       sdc              -
+node01_vmdk0_2 auto:none      -            -           online invalid       sde              -
+node01_vmdk0_3 auto:cdsdisk   node01_vmdk0_3  sharedg     online shared        sdb              -
 sda          auto:LVM       -            -           LVM                  sda              -
 [root@node01 ~]# vxdisk -e list
 DEVICE       TYPE           DISK        GROUP        STATUS               OS_NATIVE_NAME   ATTR
-pl-l1-aux-app-0_vmdk0_0 auto:none      -            -           online invalid       sdd              -
-pl-l1-aux-app-0_vmdk0_1 auto:none      -            -           online invalid       sdc              -
-pl-l1-aux-app-0_vmdk0_2 auto:none      -            -           online invalid       sde              -
-pl-l1-aux-app-0_vmdk0_3 auto:cdsdisk   pl-l1-aux-app-0_vmdk0_3  sharedg     online shared        sdb              -
+node01_vmdk0_0 auto:none      -            -           online invalid       sdd              -
+node01_vmdk0_1 auto:none      -            -           online invalid       sdc              -
+node01_vmdk0_2 auto:none      -            -           online invalid       sde              -
+node01_vmdk0_3 auto:cdsdisk   node01_vmdk0_3  sharedg     online shared        sdb              -
 sda          auto:LVM       -            -           LVM                  sda              -
 [root@node01 ~]# hastatus -sum
 
@@ -3906,10 +3906,10 @@ B  cvm             node02     Y          N               ONLINE
 [root@node01 ~]# vxassist -g sharedg make share_vol 1000G
 [root@node01 ~]# vxdisk -e list
 DEVICE       TYPE           DISK        GROUP        STATUS               OS_NATIVE_NAME   ATTR
-pl-l1-aux-app-0_vmdk0_0 auto:none      -            -           online invalid       sdd              -
-pl-l1-aux-app-0_vmdk0_1 auto:none      -            -           online invalid       sdc              -
-pl-l1-aux-app-0_vmdk0_2 auto:none      -            -           online invalid       sde              -
-pl-l1-aux-app-0_vmdk0_3 auto:cdsdisk   pl-l1-aux-app-0_vmdk0_3  sharedg     online shared        sdb              -
+node01_vmdk0_0 auto:none      -            -           online invalid       sdd              -
+node01_vmdk0_1 auto:none      -            -           online invalid       sdc              -
+node01_vmdk0_2 auto:none      -            -           online invalid       sde              -
+node01_vmdk0_3 auto:cdsdisk   node01_vmdk0_3  sharedg     online shared        sdb              -
 sda          auto:LVM       -            -           LVM                  sda              -
 [root@node01 ~]#
 
@@ -3928,10 +3928,10 @@ B  cvm             node01     Y          N               ONLINE
 B  cvm             node02     Y          N               ONLINE
 [root@node01 ~]# vxdisk -e list
 DEVICE       TYPE           DISK        GROUP        STATUS               OS_NATIVE_NAME   ATTR
-pl-l1-aux-app-0_vmdk0_0 auto:none      -            -           online invalid       sdd              -
-pl-l1-aux-app-0_vmdk0_1 auto:none      -            -           online invalid       sdc              -
-pl-l1-aux-app-0_vmdk0_2 auto:none      -            -           online invalid       sde              -
-pl-l1-aux-app-0_vmdk0_3 auto:cdsdisk   pl-l1-aux-app-0_vmdk0_3  sharedg     online shared        sdb              -
+node01_vmdk0_0 auto:none      -            -           online invalid       sdd              -
+node01_vmdk0_1 auto:none      -            -           online invalid       sdc              -
+node01_vmdk0_2 auto:none      -            -           online invalid       sde              -
+node01_vmdk0_3 auto:cdsdisk   node01_vmdk0_3  sharedg     online shared        sdb              -
 sda          auto:LVM       -            -           LVM                  sda              -
 [root@node01 ~]# mkdir -p /infa_shared
 [root@node01 ~]# df -Th /infa_shared
@@ -3955,20 +3955,20 @@ Filesystem                    Type  Size  Used Avail Use% Mounted on
 
 [root@node01 ~]# vxdisk -e list
 DEVICE       TYPE           DISK        GROUP        STATUS               OS_NATIVE_NAME   ATTR
-pl-l1-aux-app-0_vmdk0_0 auto:none      -            -           online invalid       sdd              -
-pl-l1-aux-app-0_vmdk0_1 auto:none      -            -           online invalid       sdc              -
-pl-l1-aux-app-0_vmdk0_2 auto:none      -            -           online invalid       sde              -
-pl-l1-aux-app-0_vmdk0_3 auto:cdsdisk   pl-l1-aux-app-0_vmdk0_3  sharedg     online shared        sdb              -
+node01_vmdk0_0 auto:none      -            -           online invalid       sdd              -
+node01_vmdk0_1 auto:none      -            -           online invalid       sdc              -
+node01_vmdk0_2 auto:none      -            -           online invalid       sde              -
+node01_vmdk0_3 auto:cdsdisk   node01_vmdk0_3  sharedg     online shared        sdb              -
 sda          auto:LVM       -            -           LVM                  sda              -
 [root@node01 ~]#
 
 
 [root@node02 ~]# vxdisk -e list
 DEVICE       TYPE           DISK        GROUP        STATUS               OS_NATIVE_NAME   ATTR
-pl-l1-aux-app-0_vmdk0_0 auto:none      -            -           online invalid       sdd              -
-pl-l1-aux-app-0_vmdk0_1 auto:none      -            -           online invalid       sdc              -
-pl-l1-aux-app-0_vmdk0_2 auto:none      -            -           online invalid       sde              -
-pl-l1-aux-app-0_vmdk0_3 auto:cdsdisk   pl-l1-aux-app-0_vmdk0_3  sharedg     online shared        sdb              -
+node01_vmdk0_0 auto:none      -            -           online invalid       sdd              -
+node01_vmdk0_1 auto:none      -            -           online invalid       sdc              -
+node01_vmdk0_2 auto:none      -            -           online invalid       sde              -
+node01_vmdk0_3 auto:cdsdisk   node01_vmdk0_3  sharedg     online shared        sdb              -
 sda          auto:LVM       -            -           LVM                  sda              -
 [root@node02 ~]# df -Th
 Filesystem                 Type      Size  Used Avail Use% Mounted on
@@ -4048,10 +4048,10 @@ B  cvm             node01     Y          N               ONLINE
 B  cvm             node02     Y          N               ONLINE
 [root@node01 ~]# vxdisk -e list
 DEVICE       TYPE           DISK        GROUP        STATUS               OS_NATIVE_NAME   ATTR
-pl-l1-aux-app-0_vmdk0_0 auto:none      -            -           online invalid       sdd              -
-pl-l1-aux-app-0_vmdk0_1 auto:none      -            -           online invalid       sdc              -
-pl-l1-aux-app-0_vmdk0_2 auto:none      -            -           online invalid       sde              -
-pl-l1-aux-app-0_vmdk0_3 auto:cdsdisk   pl-l1-aux-app-0_vmdk0_3  sharedg     online shared        sdb              -
+node01_vmdk0_0 auto:none      -            -           online invalid       sdd              -
+node01_vmdk0_1 auto:none      -            -           online invalid       sdc              -
+node01_vmdk0_2 auto:none      -            -           online invalid       sde              -
+node01_vmdk0_3 auto:cdsdisk   node01_vmdk0_3  sharedg     online shared        sdb              -
 sda          auto:LVM       -            -           LVM                  sda              -
 [root@node01 ~]#
 
@@ -4071,10 +4071,10 @@ B  cvm             node01     Y          N               ONLINE
 B  cvm             node02     Y          N               ONLINE
 [root@node02 ~]# vxdisk -e list
 DEVICE       TYPE           DISK        GROUP        STATUS               OS_NATIVE_NAME   ATTR
-pl-l1-aux-app-0_vmdk0_0 auto:none      -            -           online invalid       sdd              -
-pl-l1-aux-app-0_vmdk0_1 auto:none      -            -           online invalid       sdc              -
-pl-l1-aux-app-0_vmdk0_2 auto:none      -            -           online invalid       sde              -
-pl-l1-aux-app-0_vmdk0_3 auto:cdsdisk   pl-l1-aux-app-0_vmdk0_3  sharedg     online shared        sdb              -
+node01_vmdk0_0 auto:none      -            -           online invalid       sdd              -
+node01_vmdk0_1 auto:none      -            -           online invalid       sdc              -
+node01_vmdk0_2 auto:none      -            -           online invalid       sde              -
+node01_vmdk0_3 auto:cdsdisk   node01_vmdk0_3  sharedg     online shared        sdb              -
 sda          auto:LVM       -            -           LVM                  sda              -
 [root@node02 ~]#
 
