@@ -1365,10 +1365,10 @@ Resolved dependency misconfiguration issue (no Failover-Parallel mix dependency)
 
 
 
-  pl-p1-aux-05
+  node015
 /dev/vx/dsk/infashared_dg/infashared_vol vxfs       12T   11T  1.7T  86% /infa_shared
 
-pl-p1-aux-06
+node016
 
 https://sort.veritas.com/
 https://sort.veritas.com/documents/doc_details/vie/7.4.2/Linux/Documentation/
@@ -2028,7 +2028,7 @@ The following rpms failed to install on node02:
 
 
 
-[root@pl-p1-aux-05 ~]# rpm -qa | grep -i vrts
+[root@node015 ~]# rpm -qa | grep -i vrts
 VRTSspt-7.4.2.1400-0021_RHEL8.noarch
 VRTScavf-7.4.2.4700-GENERIC.x86_64
 VRTSperl-5.30.0.5-RHEL8.x86_64
@@ -2056,7 +2056,7 @@ VRTSvbs-7.4.2.0000-GA_Linux.x86_64
 VRTSodm-7.4.2.5200-RHEL8.x86_64
 VRTSvlic-4.01.742.300-RHEL8.x86_64
 VRTSglm-7.4.2.4800-RHEL8.x86_64
-[root@pl-p1-aux-05 ~]#
+[root@node015 ~]#
 
 
 [root@node01 rhel8_x86_64]# cat docs/readme.txt
@@ -2800,30 +2800,30 @@ master: node01
 [root@node02 ~]#
 
 
-[root@pl-p1-aux-05 ~]# /opt/VRTSvcs/bin/hastatus -sum
+[root@node015 ~]# /opt/VRTSvcs/bin/hastatus -sum
 
 -- SYSTEM STATE
 -- System               State                Frozen
 
-A  pl-p1-aux-05         RUNNING              0
-A  pl-p1-aux-06         RUNNING              0
+A  node015         RUNNING              0
+A  node016         RUNNING              0
 
 -- GROUP STATE
 -- Group           System               Probed     AutoDisabled    State
 
-B  cvm             pl-p1-aux-05         Y          N               ONLINE
-B  cvm             pl-p1-aux-06         Y          N               ONLINE
-B  vip_sg          pl-p1-aux-05         Y          N               OFFLINE
-B  vip_sg          pl-p1-aux-06         Y          N               OFFLINE
-B  vrts_vea_cfs_int_cfsmount1 pl-p1-aux-05         Y          N               ONLINE
-B  vrts_vea_cfs_int_cfsmount1 pl-p1-aux-06         Y          N               ONLINE
-B  vxfen           pl-p1-aux-05         Y          N               ONLINE
-B  vxfen           pl-p1-aux-06         Y          N               ONLINE
-[root@pl-p1-aux-05 ~]#
+B  cvm             node015         Y          N               ONLINE
+B  cvm             node016         Y          N               ONLINE
+B  vip_sg          node015         Y          N               OFFLINE
+B  vip_sg          node016         Y          N               OFFLINE
+B  vrts_vea_cfs_int_cfsmount1 node015         Y          N               ONLINE
+B  vrts_vea_cfs_int_cfsmount1 node016         Y          N               ONLINE
+B  vxfen           node015         Y          N               ONLINE
+B  vxfen           node016         Y          N               ONLINE
+[root@node015 ~]#
 
 
 
-[root@pl-p1-aux-05 ~]# gabconfig -a
+[root@node015 ~]# gabconfig -a
 GAB Port Memberships
 ===============================================================
 Port a gen   9cc001 membership 01
@@ -2846,7 +2846,7 @@ Port w gen   9cc00c membership 01
 Port w gen   9cc00c   jeopardy ;1
 Port y gen   9cc009 membership 01
 Port y gen   9cc009   jeopardy ;1
-[root@pl-p1-aux-05 ~]# systemctl status vxfen
+[root@node015 ~]# systemctl status vxfen
 ● vxfen.service - VERITAS I/O Fencing (VxFEN)
    Loaded: loaded (/opt/VRTSvcs/vxfen/bin/vxfen; enabled; vendor preset: disabled)
    Active: active (exited) since Sun 2025-06-08 07:13:34 PDT; 1 weeks 5 days ago
@@ -2856,7 +2856,7 @@ Port y gen   9cc009   jeopardy ;1
    CGroup: /system.slice/vxfen.service
 
 Warning: Journal has been rotated since unit was started. Log output is incomplete or unavailable.
-[root@pl-p1-aux-05 ~]# vxfenadm -d
+[root@node015 ~]# vxfenadm -d
 
 I/O Fencing Cluster Information:
 ================================
@@ -2866,14 +2866,14 @@ I/O Fencing Cluster Information:
  Fencing SCSI3 Disk Policy: dmp
  Cluster Members:
 
-        * 0 (pl-p1-aux-05)
-          1 (pl-p1-aux-06)
+        * 0 (node015)
+          1 (node016)
 
  RFSM State Information:
         node   0 in state  8 (running)
         node   1 in state  8 (running)
 
-[root@pl-p1-aux-05 ~]# vxfenadm -p
+[root@node015 ~]# vxfenadm -p
 vxfenadm: usage:
         -a -k|K <key> -f <disk_file>
 
@@ -2889,24 +2889,24 @@ Review fencing logs	tail -f /var/VRTSvcs/log/vxfen.log
 Check SCSI PR on disk (optional)	sg_persist --in --read-reservation /dev/mapper/mpathX
 
 
-[root@pl-p1-aux-05 ~]# cat /etc/llttab
-set-node pl-p1-aux-05
+[root@node015 ~]# cat /etc/llttab
+set-node node015
 set-cluster 50376
 link ens4f0 eth-64:51:06:ef:70:e8 - ether - -
 link ens5f0 eth-64:51:06:ef:79:10 - ether - -
 link-lowpri bond0 bond0 - ether - -
-[root@pl-p1-aux-05 ~]#
-[root@pl-p1-aux-05 ~]#
+[root@node015 ~]#
+[root@node015 ~]#
 
 
-[root@pl-p1-aux-05 ~]# lltstat -nvv
+[root@node015 ~]# lltstat -nvv
 LLT node information:
     Node                 State    Link  Status  Address
-   * 0 pl-p1-aux-05      OPEN
+   * 0 node015      OPEN
                                   ens4f0   UP      64:51:06:EF:70:E8
                                   ens5f0   UP      64:51:06:EF:79:10
                                   bond0   UP      28:80:23:AE:64:9C
-     1 pl-p1-aux-06      OPEN
+     1 node016      OPEN
                                   ens4f0   DOWN
                                   ens5f0   DOWN
                                   bond0   UP      28:80:23:AE:46:04
@@ -3414,7 +3414,7 @@ LLT node information:
                                   ens4f0   DOWN
                                   ens5f0   DOWN
                                   bond0   DOWN
-[root@pl-p1-aux-05 ~]#
+[root@node015 ~]#
 
 
                                          Veritas InfoScale Enterprise 7.4.2 Configure Program
@@ -3828,26 +3828,26 @@ vxassist -g sharedg make share_vol 1000G
 mkfs -t vxfs /dev/vx/dsk/sharedg/share_vol
 
 
-[root@pl-p1-aux-05 ~]# hastatus -sum
+[root@node015 ~]# hastatus -sum
 
 -- SYSTEM STATE
 -- System               State                Frozen
 
-A  pl-p1-aux-05         RUNNING              0
-A  pl-p1-aux-06         RUNNING              0
+A  node015         RUNNING              0
+A  node016         RUNNING              0
 
 -- GROUP STATE
 -- Group           System               Probed     AutoDisabled    State
 
-B  cvm             pl-p1-aux-05         Y          N               ONLINE
-B  cvm             pl-p1-aux-06         Y          N               ONLINE
-B  vip_sg          pl-p1-aux-05         Y          N               OFFLINE
-B  vip_sg          pl-p1-aux-06         Y          N               OFFLINE
-B  vrts_vea_cfs_int_cfsmount1 pl-p1-aux-05         Y          N               ONLINE
-B  vrts_vea_cfs_int_cfsmount1 pl-p1-aux-06         Y          N               ONLINE
-B  vxfen           pl-p1-aux-05         Y          N               ONLINE
-B  vxfen           pl-p1-aux-06         Y          N               ONLINE
-[root@pl-p1-aux-05 ~]#
+B  cvm             node015         Y          N               ONLINE
+B  cvm             node016         Y          N               ONLINE
+B  vip_sg          node015         Y          N               OFFLINE
+B  vip_sg          node016         Y          N               OFFLINE
+B  vrts_vea_cfs_int_cfsmount1 node015         Y          N               ONLINE
+B  vrts_vea_cfs_int_cfsmount1 node016         Y          N               ONLINE
+B  vxfen           node015         Y          N               ONLINE
+B  vxfen           node016         Y          N               ONLINE
+[root@node015 ~]#
 
 mkdir -p /infa_shared
 
@@ -4080,29 +4080,29 @@ sda          auto:LVM       -            -           LVM                  sda   
 
 
 
-[root@pl-p1-aux-05 ~]# hastatus -sum
+[root@node015 ~]# hastatus -sum
 
 -- SYSTEM STATE
 -- System               State                Frozen
 
-A  pl-p1-aux-05         RUNNING              0
-A  pl-p1-aux-06         RUNNING              0
+A  node015         RUNNING              0
+A  node016         RUNNING              0
 
 -- GROUP STATE
 -- Group           System               Probed     AutoDisabled    State
 
-B  cvm             pl-p1-aux-05         Y          N               ONLINE
-B  cvm             pl-p1-aux-06         Y          N               ONLINE
-B  vip_sg          pl-p1-aux-05         Y          N               OFFLINE
-B  vip_sg          pl-p1-aux-06         Y          N               OFFLINE
-B  vrts_vea_cfs_int_cfsmount1 pl-p1-aux-05         Y          N               ONLINE
-B  vrts_vea_cfs_int_cfsmount1 pl-p1-aux-06         Y          N               ONLINE
-B  vxfen           pl-p1-aux-05         Y          N               ONLINE
-B  vxfen           pl-p1-aux-06         Y          N               ONLINE
-[root@pl-p1-aux-05 ~]# vxdisk list
+B  cvm             node015         Y          N               ONLINE
+B  cvm             node016         Y          N               ONLINE
+B  vip_sg          node015         Y          N               OFFLINE
+B  vip_sg          node016         Y          N               OFFLINE
+B  vrts_vea_cfs_int_cfsmount1 node015         Y          N               ONLINE
+B  vrts_vea_cfs_int_cfsmount1 node016         Y          N               ONLINE
+B  vxfen           node015         Y          N               ONLINE
+B  vxfen           node016         Y          N               ONLINE
+[root@node015 ~]# vxdisk list
 DEVICE          TYPE            DISK         GROUP        STATUS
-pl-p1-aux-05_hpe_app0_0 auto:none       -            -            online invalid
-pl-p1-aux-05_hpe_app0_1 auto:LVM        -            -            LVM
+node015_hpe_app0_0 auto:none       -            -            online invalid
+node015_hpe_app0_1 auto:LVM        -            -            LVM
 3pardata0_636 auto:cdsdisk    -            (vxfencoordg) online thinrclm
 3pardata0_637 auto:cdsdisk    -            (vxfencoordg) online thinrclm
 3pardata0_638 auto:cdsdisk    -            (vxfencoordg) online thinrclm
@@ -4113,7 +4113,7 @@ pl-p1-aux-05_hpe_app0_1 auto:LVM        -            -            LVM
 3pardata0_643 auto:cdsdisk    infashared_dg05  infashared_dg online thinrclm shared
 3pardata0_644 auto:cdsdisk    infashared_dg06  infashared_dg online thinrclm shared
 3pardata0_645 auto:LVM        -            -            LVM
-[root@pl-p1-aux-05 ~]# df -Th
+[root@node015 ~]# df -Th
 Filesystem                               Type      Size  Used Avail Use% Mounted on
 devtmpfs                                 devtmpfs  126G     0  126G   0% /dev
 tmpfs                                    tmpfs     126G     0  126G   0% /dev/shm
@@ -4135,7 +4135,7 @@ tmpfs                                    tmpfs      26G     0   26G   0% /run/us
 tmpfs                                    tmpfs      26G     0   26G   0% /run/user/4113
 tmpfs                                    tmpfs      26G     0   26G   0% /run/user/513202344
 tmpfs                                    tmpfs      26G     0   26G   0% /run/user/513202535
-[root@pl-p1-aux-05 ~]#
+[root@node015 ~]#
 
 
 
