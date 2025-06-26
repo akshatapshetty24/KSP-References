@@ -153,3 +153,21 @@ This configures a **two-node VCS CFS cluster** with:
 - **Clustered filesystem mount managed via VCS**
 - **Parallel service groups for both CVM and CFS mount**
 - **Clean and verifiable state transitions**
+
+Veritas Cluster Group Action Diagram
+
+flowchart TD
+    A[Service Group/Resource State]
+    B{Is group in FAULTED state?}
+    C{Is group stuck in transition?}
+    D[hagrp -clear <group> -sys <system>]
+    E[hagrp -flush <group> -sys <system>]
+    F[Resume normal operations]
+
+    A --> B
+    B -- Yes --> D
+    B -- No --> C
+    C -- Yes --> E
+    C -- No --> F
+    D --> F
+    E --> F
