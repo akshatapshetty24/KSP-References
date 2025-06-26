@@ -171,3 +171,9 @@ flowchart TD
     C -- No --> F
     D --> F
     E --> F
+
+
+📌 Summary Table
+Situation	Command	Effect
+Group is FAULTED after a failure	hagrp -clear <group> -sys <system>	Clears fault status, allows retry or manual operations
+Group is stuck in transition (waiting, pending, unknown)	hagrp -flush <group> -sys <system>	Flushes pending actions, resets group’s transition state
