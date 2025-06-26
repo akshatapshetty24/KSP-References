@@ -18,11 +18,15 @@ CLUSTER_NAME=$(grep -i '^cluster' /etc/VRTSvcs/conf/config/main.cf | awk '{print
 echo "📡 Cluster Name: $CLUSTER_NAME"
 echo "===================="
 
+echo "Master Node Information"
+vxdctl -c mode
+echo "--------------------"
+
 
 # 1️⃣ Check LLT links and port status
 echo "🔍 LLT Link Status:"
 #lltstat -nvv | grep -E "Node|Link|Status"
-lltstat -nvv | head -10
+lltstat -nvv | head -8
 echo "--------------------"
 
 # 2️⃣ Check GAB port membership
@@ -65,6 +69,16 @@ echo "--------------------"
 # 8️⃣ Check for offline/faulted resources
 echo "🔍 Resources Offline/Faulted:"
 hares -state | egrep "OFFLINE|FAULTED"
+
+echo "--------------------"
+
+
+echo "Verify CFS Mount point"
+df -Th | grep /infa_shared
+
+
+echo "--------------------"
+
 
 echo "===================="
 echo "✅ Cluster health check completed."
